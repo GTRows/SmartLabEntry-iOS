@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		089AC2AF2AE7FFC400FD0644 /* SmartLabEntryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089AC2AE2AE7FFC400FD0644 /* SmartLabEntryApp.swift */; };
+		089AC2B12AE7FFC400FD0644 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089AC2B02AE7FFC400FD0644 /* ContentView.swift */; };
+		089AC2B52AE7FFC500FD0644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 089AC2B42AE7FFC500FD0644 /* Assets.xcassets */; };
+		089AC2B82AE7FFC500FD0644 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 089AC2B72AE7FFC500FD0644 /* Preview Assets.xcassets */; };
+		08E2AC9A2AE9E888008E9EB3 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2AC992AE9E888008E9EB3 /* AuthView.swift */; };
+		08E2AC9C2AE9E8CE008E9EB3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2AC9B2AE9E8CE008E9EB3 /* SplashView.swift */; };
+		08E2AC9F2AE9EE46008E9EB3 /* Comfortaa.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08E2AC9E2AE9EE46008E9EB3 /* Comfortaa.ttf */; };
+		08E2ACA22AEA0B40008E9EB3 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2ACA12AEA0B40008E9EB3 /* NavigationView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089AC2AB2AE7FFC400FD0644 /* SmartLabEntry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartLabEntry.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		089AC2AE2AE7FFC400FD0644 /* SmartLabEntryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartLabEntryApp.swift; sourceTree = "<group>"; };
+		089AC2B02AE7FFC400FD0644 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		089AC2B42AE7FFC500FD0644 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		089AC2B72AE7FFC500FD0644 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		08E2AC992AE9E888008E9EB3 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		08E2AC9B2AE9E8CE008E9EB3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		08E2AC9E2AE9EE46008E9EB3 /* Comfortaa.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Comfortaa.ttf; sourceTree = "<group>"; };
+		08E2ACA02AE9EEE9008E9EB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		08E2ACA12AEA0B40008E9EB3 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		089AC2A82AE7FFC400FD0644 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089AC2A22AE7FFC400FD0644 = {
+			isa = PBXGroup;
+			children = (
+				089AC2AD2AE7FFC400FD0644 /* SmartLabEntry */,
+				089AC2AC2AE7FFC400FD0644 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		089AC2AC2AE7FFC400FD0644 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				089AC2AB2AE7FFC400FD0644 /* SmartLabEntry.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		089AC2AD2AE7FFC400FD0644 /* SmartLabEntry */ = {
+			isa = PBXGroup;
+			children = (
+				08E2ACA02AE9EEE9008E9EB3 /* Info.plist */,
+				08E2AC9D2AE9EE33008E9EB3 /* Fonts */,
+				08E2AC5A2AE9E678008E9EB3 /* App */,
+				08E2AC562AE9E335008E9EB3 /* Model */,
+				08E2AC582AE9E343008E9EB3 /* Utils */,
+				08E2AC572AE9E33C008E9EB3 /* Service */,
+				08E2AC5B2AE9E690008E9EB3 /* Manager */,
+				08E2AC5C2AE9E697008E9EB3 /* ViewModel */,
+				08E2AC592AE9E348008E9EB3 /* View */,
+				089AC2B62AE7FFC500FD0644 /* Preview Content */,
+				089AC2B02AE7FFC400FD0644 /* ContentView.swift */,
+				089AC2B42AE7FFC500FD0644 /* Assets.xcassets */,
+			);
+			path = SmartLabEntry;
+			sourceTree = "<group>";
+		};
+		089AC2B62AE7FFC500FD0644 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				089AC2B72AE7FFC500FD0644 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		08E2AC562AE9E335008E9EB3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		08E2AC572AE9E33C008E9EB3 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		08E2AC582AE9E343008E9EB3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		08E2AC592AE9E348008E9EB3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				08E2AC982AE9E87B008E9EB3 /* Cells */,
+				08E2AC992AE9E888008E9EB3 /* AuthView.swift */,
+				08E2AC9B2AE9E8CE008E9EB3 /* SplashView.swift */,
+				08E2ACA12AEA0B40008E9EB3 /* NavigationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		08E2AC5A2AE9E678008E9EB3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				089AC2AE2AE7FFC400FD0644 /* SmartLabEntryApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		08E2AC5B2AE9E690008E9EB3 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		08E2AC5C2AE9E697008E9EB3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		08E2AC982AE9E87B008E9EB3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		08E2AC9D2AE9EE33008E9EB3 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				08E2AC9E2AE9EE46008E9EB3 /* Comfortaa.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		089AC2AA2AE7FFC400FD0644 /* SmartLabEntry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 089AC2BB2AE7FFC500FD0644 /* Build configuration list for PBXNativeTarget "SmartLabEntry" */;
+			buildPhases = (
+				089AC2A72AE7FFC400FD0644 /* Sources */,
+				089AC2A82AE7FFC400FD0644 /* Frameworks */,
+				089AC2A92AE7FFC400FD0644 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmartLabEntry;
+			productName = SmartLabEntry;
+			productReference = 089AC2AB2AE7FFC400FD0644 /* SmartLabEntry.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089AC2A32AE7FFC400FD0644 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					089AC2AA2AE7FFC400FD0644 = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 089AC2A62AE7FFC400FD0644 /* Build configuration list for PBXProject "SmartLabEntry" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 089AC2A22AE7FFC400FD0644;
+			productRefGroup = 089AC2AC2AE7FFC400FD0644 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				089AC2AA2AE7FFC400FD0644 /* SmartLabEntry */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		089AC2A92AE7FFC400FD0644 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				089AC2B82AE7FFC500FD0644 /* Preview Assets.xcassets in Resources */,
+				08E2AC9F2AE9EE46008E9EB3 /* Comfortaa.ttf in Resources */,
+				089AC2B52AE7FFC500FD0644 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		089AC2A72AE7FFC400FD0644 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				089AC2B12AE7FFC400FD0644 /* ContentView.swift in Sources */,
+				08E2AC9C2AE9E8CE008E9EB3 /* SplashView.swift in Sources */,
+				08E2ACA22AEA0B40008E9EB3 /* NavigationView.swift in Sources */,
+				089AC2AF2AE7FFC400FD0644 /* SmartLabEntryApp.swift in Sources */,
+				08E2AC9A2AE9E888008E9EB3 /* AuthView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		089AC2B92AE7FFC500FD0644 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		089AC2BA2AE7FFC500FD0644 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		089AC2BC2AE7FFC500FD0644 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SmartLabEntry/Preview Content\"";
+				DEVELOPMENT_TEAM = 2NPB27G7C4;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartLabEntry/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GTRows.SmartLabEntry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		089AC2BD2AE7FFC500FD0644 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SmartLabEntry/Preview Content\"";
+				DEVELOPMENT_TEAM = 2NPB27G7C4;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartLabEntry/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GTRows.SmartLabEntry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		089AC2A62AE7FFC400FD0644 /* Build configuration list for PBXProject "SmartLabEntry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				089AC2B92AE7FFC500FD0644 /* Debug */,
+				089AC2BA2AE7FFC500FD0644 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		089AC2BB2AE7FFC500FD0644 /* Build configuration list for PBXNativeTarget "SmartLabEntry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				089AC2BC2AE7FFC500FD0644 /* Debug */,
+				089AC2BD2AE7FFC500FD0644 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089AC2A32AE7FFC400FD0644 /* Project object */;
+}
