@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigationView: View {
+struct NavigationBarView: View {
     var body: some View {
         ZStack {
             SplashView()
@@ -46,6 +46,6 @@ struct NavigationView: View {
     }
 }
 
-#Preview {
-    NavigationView()
-}
+//#Preview {
+//    /*NavigationBarView*/()
+//}

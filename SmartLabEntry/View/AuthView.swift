@@ -8,27 +8,28 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var isLogin = 0
-    @State private var password: String = ""
-    @State private var secondPassword: String = ""
+    @State private var isLogin = 0 // 0: Login, 1: Register First, 2: Register Second
     @State private var isPasswordVisible: Bool = false
     @State private var isSecondPasswordVisible: Bool = false
+    @StateObject var alertService = AlertService.shared
+    @ObservedObject private var viewModel = AuthViewModel()
 
     var body: some View {
         VStack {
             Spacer()
             Divider()
-
             headerView
             authenticationView
             socialAuthButtonsView
-
             Spacer()
         }
         .background(
             LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
         )
+        .alert(isPresented: $alertService.isPresenting) {
+            alertService.alert
+        }
     }
 
     var headerView: some View {
@@ -43,11 +44,11 @@ struct AuthView: View {
     var authenticationView: some View {
         VStack {
             toggleLoginRegisterView
-
+            
             if isLogin == 0 { loginView }
             else if isLogin == 1 { registerFirstView }
             else if isLogin == 2 { registerSecondView }
-            else { Text("Hata") }
+            else { Text("Error") }
 
             Spacer()
         }
@@ -58,8 +59,14 @@ struct AuthView: View {
 
     var toggleLoginRegisterView: some View {
         HStack {
-            AuthButton(title: "Giriş Yap", isSelected: isLogin == 0) { isLogin = 0 }
-            AuthButton(title: "Kayıt Ol", isSelected: isLogin == 1 || isLogin == 2) { isLogin = 1 }
+            AuthButton(title: "Login", isSelected: isLogin == 0) {
+                withAnimation {
+                    isLogin = 0
+                }
+            }
+            AuthButton(title: "Register", isSelected: isLogin == 1 || isLogin == 2) { withAnimation {
+                isLogin = 1
+            } }
         }
         .frame(width: 320, height: 60)
         .background(Color("Blue"))
@@ -82,33 +89,34 @@ struct AuthView: View {
 
     var loginView: some View {
         VStack {
-            authTextField("Okul Numarası")
-            passwordField(text: $password, isVisible: $isPasswordVisible)
+            authTextField("Email", text: $viewModel.email)
+            passwordField(text: $viewModel.password, isVisible: $isPasswordVisible)
             forgotPasswordButton
-            actionButton("Giriş Yap") { print("Giriş Yap") }
+            actionButton("Login") { print("Giriş Yap") }
         }
     }
 
     var registerFirstView: some View {
         VStack {
-            authTextField("Ad")
-            authTextField("Soyad")
-            authTextField("Okul Numarası")
-            actionButton("İleri") { isLogin = 2 }
+            authTextField("Name", text: $viewModel.name)
+            authTextField("Surname", text: $viewModel.surname)
+            authTextField("School ID", text: $viewModel.schoolId)
+            actionButton("Next") { withAnimation { isLogin = 2 } }
         }
     }
 
     var registerSecondView: some View {
         VStack {
-            authTextField("Kişisel E-posta")
-            passwordField(text: $password, isVisible: $isPasswordVisible)
-            passwordField(text: $secondPassword, isVisible: $isSecondPasswordVisible, placeholder: "Şifre Onay")
-            actionButton("Kayıt Ol") { print("Kayıt olundu") }
+            authTextField("Personal Email", text: $viewModel.email)
+            passwordField(text: $viewModel.password, isVisible: $isPasswordVisible)
+            passwordField(text: $viewModel.confirmPassword, isVisible: $isSecondPasswordVisible, placeholder: "Confirm Password")
+            actionButton("Register") { print("Kayıt olundu") }
         }
     }
 
-    func authTextField(_ placeholder: String) -> some View {
-        TextField(placeholder, text: .constant(""))
+    func authTextField(_ placeholder: String, text: Binding<String>) -> some View {
+        TextField(placeholder, text: text)
+            .foregroundStyle(.black)
             .padding()
             .background(RoundedRectangle(cornerRadius: 17.0)
                 .stroke(Color("DarkBlue"), lineWidth: 2))
@@ -116,7 +124,7 @@ struct AuthView: View {
             .padding(.bottom, 10)
     }
 
-    func passwordField(text: Binding<String>, isVisible: Binding<Bool>, placeholder: String = "Şifre") -> some View {
+    func passwordField(text: Binding<String>, isVisible: Binding<Bool>, placeholder: String = "Password") -> some View {
         HStack {
             if isVisible.wrappedValue {
                 TextField(placeholder, text: text)
@@ -127,8 +135,8 @@ struct AuthView: View {
             Button(action: {
                 isVisible.wrappedValue.toggle()
             }) {
-                Image(systemName: isVisible.wrappedValue ? "eye.slash.fill" : "eye.fill")
-                    .foregroundColor(Color("DarkBlue"))
+                Image(systemName: isVisible.wrappedValue ? "eye.slash.fill" : "eye.fill"
+                ).foregroundStyle(.darkBlue)
             }
             .padding(.trailing, 5)
         }
@@ -143,9 +151,10 @@ struct AuthView: View {
         HStack {
             Spacer()
             Button {
-                print("Şifremi Unuttum")
+                print("Forgot Password")
+                alertService.showString(title: "forgotten", message: "not yet")
             } label: {
-                Text("Şifremi Unuttum")
+                Text("Forgot Password")
                     .font(.custom("Comfortaa", size: 12))
                     .fontWeight(.bold)
                     .foregroundColor(Color.gray)
@@ -156,7 +165,30 @@ struct AuthView: View {
     }
 
     func actionButton(_ title: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            if isLogin == 0 {
+                if viewModel.validateLoginPage() {
+                    withAnimation {
+                        viewModel.signIn()
+                    }
+                }
+            } else if isLogin == 1 {
+                if viewModel.validateFirstPage() {
+                    withAnimation {
+                        isLogin = 2
+                    }
+                }
+            } else if isLogin == 2 {
+                if viewModel.validateSecondPage() {
+                    withAnimation {
+                        viewModel.signUp()
+                    }
+                }
+            } else {
+                alertService.showString(title: "Error", message: "Unknown error occurrer.\nCode: 0x0001")
+            }
+
+        } label: {
             Text(title)
                 .font(.custom("Comfortaa", size: 20))
                 .fontWeight(.bold)
