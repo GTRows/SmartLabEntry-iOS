@@ -8,23 +8,24 @@
 import SwiftUI
 
 struct InitialView: View {
-    @AppStorage("uid") var userID: String = ""
     @State private var isShowedSplashView = false
+    @ObservedObject var userSession = UserSessionViewModel.shared
+
     var body: some View {
         if isShowedSplashView {
             SplashView()
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         withAnimation {
                             isShowedSplashView = true
                         }
                     }
                 }
         } else {
-            if userID == "" {
-                AuthView()
-            } else {
+            if userSession.isLoggedIn {
                 NavigationBarView()
+            } else {
+                AuthView()
             }
         }
     }

@@ -9,13 +9,34 @@ import SwiftUI
 
 struct NavigationBarView: View {
     var body: some View {
-        ZStack {
-            SplashView()
-            VStack {
-                Spacer()
-                navigationBarView
+        VStack {
+            Spacer()
+            Divider()
+            Button {
+                UserSessionViewModel.shared.signOut()
+            } label: {
+                Text("Logout")
+                    .font(.custom("Comfortaa", size: 20))
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("LightColor"))
+                    .frame(width: 320, height: 60)
+                    .background(.blue)
+                    .cornerRadius(15)
             }
-        }
+            Spacer()
+        }.background(
+            LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
+        )
+        
+//        ZStack {
+//            SplashView()
+//            VStack {
+//                Spacer()
+//                navigationBarView
+//            }
+//        }
+        
     }
 
     var navigationBarView: some View {
@@ -46,6 +67,6 @@ struct NavigationBarView: View {
     }
 }
 
-//#Preview {
-//    /*NavigationBarView*/()
-//}
+#Preview {
+    NavigationBarView()
+}

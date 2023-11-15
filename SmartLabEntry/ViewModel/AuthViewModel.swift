@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 class AuthViewModel: ObservableObject {
-    @Published var user: User?
+    @Published var user: UserModel?
     @Published var isUserLoggedIn: Bool = false
     @Published var name: String = ""
     @Published var surname: String = ""
@@ -21,14 +21,7 @@ class AuthViewModel: ObservableObject {
 
     private let auth = Auth.auth()
 
-    init() {
-        auth.addStateDidChangeListener(handleAuthStateChange)
-    }
-
-    func handleAuthStateChange(_ auth: Auth, _ user: User?) {
-        self.user = user
-        isUserLoggedIn = user != nil
-    }
+    init() {}
 
     func validateLoginPage() -> Bool {
         if !Validators.isValidEmail(email) {
@@ -87,32 +80,6 @@ class AuthViewModel: ObservableObject {
         return true
     }
 
-    func signIn() {
-        print("Email: \(email)")
-        print("Password: \(password)")
-        auth.signIn(withEmail: email, password: password) { [weak self] result, error in
-            if let error = error {
-                print("Error signing in: \(error.localizedDescription)")
-                print(error)
-                AlertService.shared.show(error: error)
-            } else {
-                if let user = result?.user {
-                    self?.user = user
-                    // Token'ı al ve yazdır
-                    user.getIDToken { token, error in
-                        if let error = error {
-                            print("Error fetching token: \(error.localizedDescription)")
-                        } else if let token = token {
-                            print("Bearer Token: \(token)")
-                        }
-                    }
-                }
-            }
-            self?.isUserLoggedIn = self?.user != nil
-        }
-    }
-
-
     func signUp() {
 //        TODO: control is user already registered with mail or school id or name and surname on backend
         let requestBody = [
@@ -125,12 +92,25 @@ class AuthViewModel: ObservableObject {
 
         APIService.shared.registerUser(requestBody: requestBody) { Result in
             switch Result {
-                case let .success(message):
-                    print(message)
-                    AlertService.shared.showString(title: "Register successfull", message: message)
-                case let .failure(error):
-                    print(error)
-                    AlertService.shared.show(error: error)
+            case let .success(message):
+                print(message)
+                AlertService.shared.showString(title: "Register successfull", message: message)
+            case let .failure(error):
+                print(error)
+                AlertService.shared.show(error: error)
+            }
+        }
+    }
+    
+    func signIn(){
+        UserSessionViewModel.shared.signIn(email: email, password: password) { Result in
+            switch Result {
+            case let .success(user):
+//                self.user = user
+                self.isUserLoggedIn = true
+            case let .failure(error):
+                print(error)
+                AlertService.shared.show(error: error)
             }
         }
     }

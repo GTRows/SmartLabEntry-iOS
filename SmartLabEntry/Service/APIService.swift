@@ -11,11 +11,44 @@ import Foundation
 class APIService {
     static let shared = APIService()
 
+    private lazy var baseURL: URL = {
+        APIService.getBaseURL() ?? URL(string: "http://localhost:8080")!
+    }()
+
     private init() {}
 
-    func registerUser(requestBody: [String: Any], completion: @escaping (Result<String, Error>) -> Void) {
-        let url = Constants().getApiURL().appendingPathComponent("auth/register")
+    private static func getBaseURL() -> URL? {
+        guard let path = Bundle.main.path(forResource: "config", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let urlString = dict["BaseURL"] as? String,
+              let url = URL(string: urlString) else {
+            return nil
+        }
+        return url
+    }
 
+//    func makeRequest(to path: APIPath, method: String, body: [String: Any]?, completion: @escaping (Result<String, Error>) -> Void) {
+//        let url = Constants().getApiURL().appendingPathComponent(path.rawValue)
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = method
+//
+//        if let body = body {
+//            do {
+//                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//            } catch {
+//                completion(.failure(error))
+//                return
+//            }
+//        }
+//
+//        // ... URLSession ile isteği gerçekleştirme
+//    }
+
+    func registerUser(requestBody: [String: Any], completion: @escaping (Result<String, Error>) -> Void) {
+        let url = baseURL.appendingPathComponent("auth/register")
+        print("latest url: \(url)")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
@@ -29,7 +62,7 @@ class APIService {
                     completion(.failure(error))
                 }
 
-                if let data = data {
+                if data != nil {
                     completion(.success("Register successfull"))
                 }
             }.resume()
