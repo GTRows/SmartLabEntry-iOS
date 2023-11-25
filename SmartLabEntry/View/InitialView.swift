@@ -12,6 +12,9 @@ struct InitialView: View {
     @ObservedObject var userSession = UserSessionViewModel.shared
 
     var body: some View {
+//        if true {
+//            PagerView()
+//        } else
         if isShowedSplashView {
             SplashView()
                 .onAppear {
@@ -23,7 +26,7 @@ struct InitialView: View {
                 }
         } else {
             if userSession.isLoggedIn {
-                NavigationBarView()
+                HomeView()
             } else {
                 AuthView()
             }

@@ -8,38 +8,94 @@
 import Foundation
 
 struct UserModel: Codable {
-    var id: String
-    var name: String
-    var email: String
-    var avatar: String
+    private var id: String
+    private var firstName: String
+    private var lastName: String
+    private var email: String
 
-    init(id: String, name: String, email: String, avatar: String) {
+    private var schoolId: String
+    private var role: RoleType
+    private var isVerified: Bool
+    private var isRFIDVerified: Bool
+
+    init(id: String, firstName: String, lastName: String, email: String, schoolId: String, role: RoleType, isVerified: Bool, isRFIDVerified: Bool) {
         self.id = id
-        self.name = name
+        self.firstName = firstName
+        self.lastName = lastName
         self.email = email
-        self.avatar = avatar
+
+        self.schoolId = schoolId
+        self.role = role
+        self.isVerified = isVerified
+        self.isRFIDVerified = isRFIDVerified
     }
 
     init?(from dict: [String: Any]) {
         guard let id = dict["id"] as? String,
-              let name = dict["name"] as? String,
+              let firstName = dict["firstName"] as? String,
+              let lastName = dict["lastName"] as? String,
               let email = dict["email"] as? String,
-              let avatar = dict["avatar"] as? String else {
+
+              let schoolId = dict["cardId"] as? String,
+              let roleRawValue = dict["role"] as? String, let role = RoleType(rawValue: roleRawValue),
+              let isVerified = dict["isVerified"] as? Bool,
+              let isRFIDVerified = dict["isRFIDVerified"] as? Bool else {
             return nil
         }
 
         self.id = id
-        self.name = name
+        self.firstName = firstName
+        self.lastName = lastName
         self.email = email
-        self.avatar = avatar
+
+        self.schoolId = schoolId
+        self.role = role
+        self.isVerified = isVerified
+        self.isRFIDVerified = isRFIDVerified
+    }
+
+    func getId() -> String {
+        return id
+    }
+
+    func getFirstName() -> String {
+        return firstName
+    }
+
+    func getLastName() -> String {
+        return lastName
+    }
+
+    func getEmail() -> String {
+        return email
+    }
+
+    func getSchoolId() -> String {
+        return schoolId
+    }
+
+    func getRole() -> RoleType {
+        return role
+    }
+
+    func getIsVerified() -> Bool {
+        return isVerified
+    }
+
+    func getIsRFIDVerified() -> Bool {
+        return isRFIDVerified
     }
 
     func toDict() -> [String: Any] {
         return [
             "id": id,
-            "name": name,
+            "firstName": firstName,
+            "lastName": lastName,
             "email": email,
-            "avatar": avatar,
+            "schoolId": schoolId,
+            "role": role.rawValue,
+            "isVerified": isVerified,
+            "isRFIDVerified": isRFIDVerified,
         ]
     }
 }

@@ -27,7 +27,16 @@ class UserSessionViewModel: ObservableObject {
             guard let strongSelf = self else { return }
             if let user = authResult?.user {
                 strongSelf.isLoggedIn = true
-//                completition(.success(user))
+                if let currentUser = Auth.auth().currentUser {
+                    currentUser.getIDToken() { token, error in
+                        if let error = error {
+                            print("Error getting token: \(error)")
+                        }
+                        if let token = token {
+                            print("Tokenx: \(token)")
+                        }
+                    }
+                }
                 completition(.success("test"))
             } else {
                 completition(.failure(error!))

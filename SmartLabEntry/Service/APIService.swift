@@ -70,4 +70,45 @@ class APIService {
             completion(.failure(error))
         }
     }
+    
+    func fetchUser(completion: @escaping (Result<UserModel, Error>) -> Void) {
+        // Önce Bearer token alın
+        UserSessionService.shared.getBearerToken { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let token):
+                let url = URL(string: APIPath.getUserData.path)!
+                var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+
+                    guard let data = data else {
+                        completion(.failure(NSError(domain: "NetworkError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received from server"])))
+                        return
+                    }
+
+                    do {
+                        // JSON verisini UserModel'a dönüştür
+                        // Print data string
+                        let dataString = String(data: data, encoding: .utf8)
+                        print("Data string: \(dataString)")
+                        
+                        let userModel = try JSONDecoder().decode(UserModel.self, from: data)
+                        completion(.success(userModel))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }.resume()
+            }
+        }
+    }
+
+    
 }

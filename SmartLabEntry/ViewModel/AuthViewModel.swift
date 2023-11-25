@@ -82,6 +82,7 @@ class AuthViewModel: ObservableObject {
 
     func signUp() {
 //        TODO: control is user already registered with mail or school id or name and surname on backend
+
         let requestBody = [
             "firstName": name,
             "lastName": surname,
@@ -90,7 +91,7 @@ class AuthViewModel: ObservableObject {
             "password": password,
         ]
 
-        APIService.shared.registerUser(requestBody: requestBody) { Result in
+        UserSessionService.shared.createUser(requestBody: requestBody) { Result in
             switch Result {
             case let .success(message):
                 print(message)
@@ -101,12 +102,11 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-    
-    func signIn(){
-        UserSessionViewModel.shared.signIn(email: email, password: password) { Result in
+
+    func signIn() {
+        UserSessionService.shared.signIn(email: email, password: password) { Result in
             switch Result {
             case let .success(user):
-//                self.user = user
                 self.isUserLoggedIn = true
             case let .failure(error):
                 print(error)
