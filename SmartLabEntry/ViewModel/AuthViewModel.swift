@@ -15,8 +15,8 @@ class AuthViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var surname: String = ""
     @Published var schoolId: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "admin@gmail.com"
+    @Published var password: String = "1234.Five"
     @Published var confirmPassword: String = ""
 
     private let auth = Auth.auth()
@@ -112,31 +112,74 @@ class AuthViewModel: ObservableObject {
         // Call the signIn method from UserSessionService
         UserSessionService.shared.loginUser(email: email, password: password) { [weak self] result in
             switch result {
-            case .success(let message):
+            case let .success(message):
                 print(message)
                 AlertService.shared.showString(title: "Success", message: "You are now logged in.")
 
                 // Retrieve the bearer token
                 UserSessionService.shared.getBearerToken { tokenResult in
                     switch tokenResult {
-                    case .success(let token):
+                    case let .success(token):
                         print("Bearer Token: \(token)")
-                    case .failure(let error):
+
+                        // Copy the token to the clipboard
+                        UIPasteboard.general.string = token
+
+                        // Notify the user that the token has been copied
+                        DispatchQueue.main.async {
+                            // Sign out the user
+                            UserSessionService.shared.signOut()
+                            self?.isUserLoggedIn = false
+                            self?.user = nil
+
+                            AlertService.shared.showString(title: "Token Copied", message: "Bearer token copied to clipboard. Logging out...")
+                        }
+
+                    case let .failure(error):
                         print("Error retrieving token: \(error.localizedDescription)")
                     }
-
-                    // Update the UI to reflect the user is logged in
-                    DispatchQueue.main.async {
-                        self?.isUserLoggedIn = true
-                        self?.user = UserSessionService.shared.getUser()
-                    }
                 }
-                
-            case .failure(let error):
+
+            case let .failure(error):
                 print(error.localizedDescription)
                 AlertService.shared.showString(title: "Error", message: "Login failed: \(error.localizedDescription)")
             }
         }
     }
 
+//    func signIn() {
+//        // Validate the input fields
+//        guard validateLoginPage() else {
+//            return
+//        }
+//
+//        // Call the signIn method from UserSessionService
+//        UserSessionService.shared.loginUser(email: email, password: password) { [weak self] result in
+//            switch result {
+//            case .success(let message):
+//                print(message)
+//                AlertService.shared.showString(title: "Success", message: "You are now logged in.")
+//
+//                // Retrieve the bearer token
+//                UserSessionService.shared.getBearerToken { tokenResult in
+//                    switch tokenResult {
+//                    case .success(let token):
+//                        print("Bearer Token: \(token)")
+//                    case .failure(let error):
+//                        print("Error retrieving token: \(error.localizedDescription)")
+//                    }
+//
+//                    // Update the UI to reflect the user is logged in
+//                    DispatchQueue.main.async {
+//                        self?.isUserLoggedIn = true
+//                        self?.user = UserSessionService.shared.getUser()
+//                    }
+//                }
+//
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//                AlertService.shared.showString(title: "Error", message: "Login failed: \(error.localizedDescription)")
+//            }
+//        }
+//    }
 }
