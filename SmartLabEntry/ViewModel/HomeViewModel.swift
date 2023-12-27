@@ -6,17 +6,21 @@
 //
 
 import Foundation
+import SwiftUIPager
 
 class HomeViewModel: ObservableObject {
-    @Published var userSession = UserSessionViewModel.shared
     @Published var name = "Name"
-
-    @Published var LabNames_temp = ""
-    @Published var LabDates_temp = ""
+    
+    @Published var accessPortalList: [AccessPortalModel] = []
+    @Published var currentPage: Page = .first()
 
     init() {
         name = "name"
-        LabNames_temp = "0"
-        LabDates_temp = "1"
+        accessPortalList = [
+            AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: [], logoName: "Logo_2"),
+            AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: [], logoName: "Logo_2"),
+            AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: [], logoName: "Logo_2"),
+            AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: [], logoName: "Logo_2"),
+        ]
     }
 }

@@ -1,4 +1,4 @@
-//
+
 //  SmartLabEntryApp.swift
 //  SmartLabEntry
 //
@@ -21,11 +21,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct SmartLabEntryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject private var authViewModel = AuthViewModel()
     
     var body: some Scene {
         WindowGroup {
             InitialView()
+                .preferredColorScheme(.light)
         }
     }
 }

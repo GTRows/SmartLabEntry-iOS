@@ -2,13 +2,13 @@
 //  AuthViewModel.swift
 //  SmartLabEntry
 //
-//  Created by Fatih Acıroğlu on 5.11.2023.
+//  Created by Fatih Acıroğlu on 10.12.2023.
 //
 
 import FirebaseAuth
 import Foundation
 import SwiftUI
-
+//
 class AuthViewModel: ObservableObject {
     @Published var user: UserModel?
     @Published var isUserLoggedIn: Bool = false
@@ -104,14 +104,39 @@ class AuthViewModel: ObservableObject {
     }
 
     func signIn() {
-        UserSessionService.shared.signIn(email: email, password: password) { Result in
-            switch Result {
-            case let .success(user):
-                self.isUserLoggedIn = true
-            case let .failure(error):
-                print(error)
-                AlertService.shared.show(error: error)
+        // Validate the input fields
+        guard validateLoginPage() else {
+            return
+        }
+
+        // Call the signIn method from UserSessionService
+        UserSessionService.shared.loginUser(email: email, password: password) { [weak self] result in
+            switch result {
+            case .success(let message):
+                print(message)
+                AlertService.shared.showString(title: "Success", message: "You are now logged in.")
+
+                // Retrieve the bearer token
+                UserSessionService.shared.getBearerToken { tokenResult in
+                    switch tokenResult {
+                    case .success(let token):
+                        print("Bearer Token: \(token)")
+                    case .failure(let error):
+                        print("Error retrieving token: \(error.localizedDescription)")
+                    }
+
+                    // Update the UI to reflect the user is logged in
+                    DispatchQueue.main.async {
+                        self?.isUserLoggedIn = true
+                        self?.user = UserSessionService.shared.getUser()
+                    }
+                }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+                AlertService.shared.showString(title: "Error", message: "Login failed: \(error.localizedDescription)")
             }
         }
     }
+
 }

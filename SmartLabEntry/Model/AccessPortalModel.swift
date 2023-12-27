@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct AccessPortalModel: Codable{
+struct AccessPortalModel: Codable, Equatable, Hashable {
     var name: String
     var isOpen: Bool
+    var maxCapacity: Int
     var currentUsersId: [String]
-    
+    var logoName: String // TODO: change to logoUrl
 }

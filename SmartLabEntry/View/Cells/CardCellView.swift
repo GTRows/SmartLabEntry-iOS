@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct CardCellView: View {
-    let logoName: String
-    let title: String
-    var isAccessPortalOnline: Bool
-    var isUserInSession: Bool
-    var currentCapacity: Int
-    var maxCapacity: Int
+    @State var isUserInSession: Bool = false
+    @State var accessPortal: AccessPortalModel
+
+    init(accessPortal: AccessPortalModel) {
+        self.accessPortal = accessPortal
+    }
 
     var body: some View {
         ZStack {
@@ -44,7 +44,7 @@ struct CardCellView: View {
     }
 
     private var logoImage: some View {
-        Image(logoName)
+        Image(accessPortal.logoName)
             .resizable()
             .frame(width: 100, height: 100)
             .padding(.leading, 40)
@@ -60,7 +60,7 @@ struct CardCellView: View {
 
     private var name: some View {
         HStack {
-            Text(title)
+            Text(accessPortal.name)
                 .customStyle(size: 30, fontWeight: .bold)
             Spacer()
         }
@@ -69,18 +69,18 @@ struct CardCellView: View {
     private var status: some View {
         HStack {
             statusIndicator
-            Text(isAccessPortalOnline ? "Online" : "Offline")
+            Text(accessPortal.isOpen ? "Online" : "Offline")
                 .customStyle()
             Spacer()
         }
     }
-    
+
     private var capacity: some View {
         HStack {
             Image(systemName: "person.fill")
                 .foregroundColor(Color("DarkBlue"))
                 .padding(.leading, 20)
-            Text("\(currentCapacity)/\(maxCapacity)")
+            Text("\(accessPortal.currentUsersId.count)/\(accessPortal.maxCapacity)")
                 .customStyle()
             Spacer()
         }
@@ -88,7 +88,7 @@ struct CardCellView: View {
 
     private var statusIndicator: some View {
         Circle()
-            .fill(isAccessPortalOnline ? Color.green : Color.red)
+            .fill(accessPortal.isOpen ? Color.green : Color.red)
             .frame(width: 10, height: 10)
             .padding(.leading, 20)
     }
@@ -125,6 +125,6 @@ extension Text {
     }
 }
 
-#Preview {
-    CardCellView(logoName: "Logo", title: "SmartLab", isAccessPortalOnline: true, isUserInSession: true, currentCapacity: 20, maxCapacity: 30)
-}
+ #Preview {
+    CardCellView(accessPortal: AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: ["asd","123","1233"], logoName: "star"))
+ }

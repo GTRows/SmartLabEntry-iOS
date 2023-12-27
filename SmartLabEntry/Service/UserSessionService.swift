@@ -6,18 +6,46 @@
 //
 
 import FirebaseAuth
-import FirebaseFirestore
-import Foundation
 
-class UserSessionService {
+import Foundation
+import SwiftUI
+
+class UserSessionService: ObservableObject {
+    private init() {}
     static let shared = UserSessionService()
+
+//    let storage = Storage.storage()
+    private var firebaseUser: FirebaseAuth.User?
     private var user: UserModel?
-    private var authUser: FirebaseAuth.User?
 
     private let auth = Auth.auth()
 
-    private init() {
-        authUser = auth.currentUser
+    @AppStorage("uid") var userID: String = ""
+//
+//    private var user: UserModel?
+//    private var authUser: FirebaseAuth.User?
+//
+
+//
+//    @State var isLoggedIn: Bool = false
+
+    // MARK: - User Operations
+
+    func getUser() -> UserModel {
+        if let user = user {
+            return user
+        }
+
+        guard (Auth.auth().currentUser?.uid) != nil else {
+            return Constants.defaultUser
+        }
+
+        // TODO: - Fetch user from api
+
+        // Else
+
+//        return userStorageService.fetchUser()
+        return Constants.defaultUser
     }
 
     func createUser(requestBody: [String: Any], completition: @escaping (Result<String, Error>) -> Void) {
@@ -25,35 +53,45 @@ class UserSessionService {
             switch Result {
             case let .success(message):
                 completition(.success(message))
-                print(message)
             case let .failure(error):
                 completition(.failure(error))
             }
         }
     }
 
-    func signIn(email: String, password: String, completition: @escaping (Result<String, Error>) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+    func loginUser(email: String, password: String, completition: @escaping (Result<String, Error>) -> Void) {
+        auth.signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
+                print(error.localizedDescription)
                 completition(.failure(error))
             } else if let authResult = authResult {
 //                TODO: Get data from api
-                
-                if true {
-                    if let authUser = self?.auth.currentUser {
-                        self?.authUser = authUser
-                    }
-                }
+                self.firebaseUser = authResult.user
+                self.userID = authResult.user.uid
+                print("User signed in.")
+                completition(.success("User signed in."))
             }
         }
     }
 
+    func signOut() {
+        try? Auth.auth().signOut()
+        setUserID(id: "")
+        user = nil
+        firebaseUser = nil
+    }
+
+    func setUserID(id: String) {
+        withAnimation {
+            self.userID = id
+        }
+    }
+
     func getBearerToken(completion: @escaping (Result<String, Error>) -> Void) {
-        guard let authUser = authUser else {
+        guard let authUser = firebaseUser else {
             completion(.failure(NSError(domain: "UserSessionService", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."])))
             return
         }
-
         authUser.getIDToken { token, error in
             if let error = error {
                 completion(.failure(error))

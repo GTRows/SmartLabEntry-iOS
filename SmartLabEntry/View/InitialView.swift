@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InitialView: View {
     @State private var isShowedSplashView = false
-    @ObservedObject var userSession = UserSessionViewModel.shared
+    @State @AppStorage("uid") var userID: String = ""
 
     var body: some View {
 //        if true {
@@ -25,7 +25,7 @@ struct InitialView: View {
                     }
                 }
         } else {
-            if userSession.isLoggedIn {
+            if userID != "" {
                 HomeView()
             } else {
                 AuthView()

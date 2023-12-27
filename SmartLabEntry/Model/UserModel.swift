@@ -16,9 +16,8 @@ struct UserModel: Codable {
     private var schoolId: String
     private var role: RoleType
     private var isVerified: Bool
-    private var isRFIDVerified: Bool
 
-    init(id: String, firstName: String, lastName: String, email: String, schoolId: String, role: RoleType, isVerified: Bool, isRFIDVerified: Bool) {
+    init(id: String, firstName: String, lastName: String, email: String, schoolId: String, role: RoleType, isVerified: Bool) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
@@ -27,7 +26,7 @@ struct UserModel: Codable {
         self.schoolId = schoolId
         self.role = role
         self.isVerified = isVerified
-        self.isRFIDVerified = isRFIDVerified
+        
     }
 
     init?(from dict: [String: Any]) {
@@ -51,7 +50,7 @@ struct UserModel: Codable {
         self.schoolId = schoolId
         self.role = role
         self.isVerified = isVerified
-        self.isRFIDVerified = isRFIDVerified
+        
     }
 
     func getId() -> String {
@@ -82,9 +81,6 @@ struct UserModel: Codable {
         return isVerified
     }
 
-    func getIsRFIDVerified() -> Bool {
-        return isRFIDVerified
-    }
 
     func toDict() -> [String: Any] {
         return [
@@ -94,8 +90,7 @@ struct UserModel: Codable {
             "email": email,
             "schoolId": schoolId,
             "role": role.rawValue,
-            "isVerified": isVerified,
-            "isRFIDVerified": isRFIDVerified,
+            "isVerified": isVerified
         ]
     }
 }
