@@ -12,75 +12,18 @@ struct HomeView: View {
     @StateObject var alertService = AlertService.shared
     @ObservedObject private var viewModel = HomeViewModel()
     @State var currentPage: Page = .first()
+
     var body: some View {
         VStack {
             Divider()
-            headerView
-                .padding(.bottom, 20)
-
-            VStack {
-                Pager(
-                    page: currentPage,
-                    data: viewModel.accessPortalList,
-                    id: \.self
-                ) { item in
-                    CardCellView(accessPortal: item)
-                }
-                .singlePagination(ratio: 0.5, sensitivity: .high)
-                .onPageWillChange({ page in
-                    print("Page will change to \(page)")
-                })
-                .pagingPriority(.simultaneous)
-                .itemSpacing(1)
+            HStack {
+                headerView
+                Spacer()
+                settingsButtonView
+                    .padding(.trailing, 30)
             }
-
-
-            //            Temp
-            Button(action: {
-                UserSessionService.shared.signOut()
-            }, label: {
-                Text("Sign Out")
-                    .padding()
-                    .background(Color.red)
-                    .cornerRadius(10)
-            })
-            .padding()
-
-            Button {
-                print("button pressed bearer")
-                UserSessionService.shared.getBearerToken { Result in
-                    switch Result {
-                    case let .success(token):
-                        print("button bearer token: \(token)")
-                    case let .failure(error):
-                        print("button fialed token \(error)")
-                    }
-                }
-            } label: {
-                Text("Get bearer token")
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10)
-            }
-            .padding()
-
-            Button {
-                APIService.shared.fetchUser { Result in
-                    switch Result {
-                    case let .success(user):
-                        print(user.toDict())
-                    case let .failure(error):
-                        print("error fetching user \(error)")
-                    }
-                }
-            } label: {
-                Text("fetch user")
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10)
-            }
-            .padding()
-
+            cardsView
+            currentView
             Spacer()
         }
         .background(
@@ -89,6 +32,79 @@ struct HomeView: View {
         )
         .alert(isPresented: $alertService.isPresenting) {
             alertService.alert
+        }
+    }
+
+    var cardsView: some View {
+        VStack {
+            Pager(
+                page: currentPage,
+                data: viewModel.accessPortalList,
+                id: \.self
+            ) { item in
+                CardCellView(accessPortal: item)
+            }
+            .singlePagination(ratio: 0.5, sensitivity: .low)
+            .onPageWillChange({ page in
+                print("Page will change to \(page)")
+            })
+            .pagingPriority(.simultaneous)
+            .itemSpacing(1)
+        }
+        .frame(height: 250)
+    }
+
+    var currentView: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color("LightColor"))
+                .frame(width: 350)
+                .cornerRadius(20)
+            VStack {
+                Text("Occupants in the room")
+                    .font(.custom("Comfortaa", size: 20))
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("DarkBlue"))
+                    .multilineTextAlignment(.center)
+                    .padding()
+
+                // Use ForEach instead of for loop
+                ForEach(viewModel.currentUsersTemp, id: \.userId) { user in
+                    HStack {
+                        Text(user.userName)
+                            .font(.custom("Comfortaa", size: 25))
+                            .fontWeight(.medium)
+                            .foregroundColor(Color("DarkBlue"))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                        Spacer()
+                        Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
+                            .font(.custom("Comfortaa", size: 25))
+                            .fontWeight(.medium)
+                            .foregroundColor(Color("DarkBlue"))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    .background(Color("LightColor"))
+                    .cornerRadius(20)
+                    .padding(.horizontal, 35)
+                }
+
+                Spacer()
+            }
+        }
+    }
+
+    var settingsButtonView: some View {
+        // logout button
+        Button(action: {
+            alertService.showString(title: "Logout", message: "Logout button pressded")
+            print("Logout")
+        }) {
+            Image(systemName: "person.crop.circle.badge.xmark")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundColor(Color("LightColor"))
         }
     }
 
@@ -107,7 +123,6 @@ struct HomeView: View {
                     .foregroundColor(Color("LightColor"))
                     .multilineTextAlignment(.leading)
             }
-            Spacer()
         }
     }
 }

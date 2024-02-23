@@ -8,27 +8,26 @@
 import SwiftUI
 
 struct InitialView: View {
-    @State private var isShowedSplashView = false
-    @State @AppStorage("uid") var userID: String = ""
+    @EnvironmentObject var userSessionService: UserSessionService
+    @State private var isShowedSplashView = true
 
     var body: some View {
-//        if true {
-//            PagerView()
-//        } else
-        if isShowedSplashView {
-            SplashView()
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        withAnimation {
-                            isShowedSplashView = true
+        Group {
+            if isShowedSplashView {
+                SplashView()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                self.isShowedSplashView = false
+                            }
                         }
                     }
-                }
-        } else {
-            if userID != "" {
-                HomeView()
             } else {
-                AuthView()
+                if userSessionService.userID != "" {
+                    HomeView()
+                } else {
+                    AuthView()
+                }
             }
         }
     }
