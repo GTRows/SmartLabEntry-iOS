@@ -156,7 +156,7 @@ class AuthViewModel: ObservableObject {
                 print(message)
                 AlertService.shared.showString(title: "Success", message: "Password reset email sent.")
                 withAnimation {
-                    self. isLogin = 0
+                    self.isLogin = 0
                 }
             case .failure(let error):
                 print(error.localizedDescription)

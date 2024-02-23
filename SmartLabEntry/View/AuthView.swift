@@ -227,8 +227,8 @@ struct AuthView: View {
 
     var socialAuthButtonsView: some View {
         HStack(spacing: 10) {
-            SocialButton(name: "Google") { print("Google ile giriş yap") }
-            SocialButton(name: "Apple") { print("Apple ile giriş yap") }
+            SocialButton(name: "Instagram") { print("Google ile giriş yap") }
+            SocialButton(name: "Linkedin") { print("Apple ile giriş yap") }
             SocialButton(name: "Logo") { print("Apple ile giriş yap") }
         }
         .frame(width: 350, height: 70)
@@ -238,11 +238,22 @@ struct AuthView: View {
     }
 
     func SocialButton(name: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button{
+            switch name{
+                case "Instagram":
+                UIApplication.shared.open(URL(string: "https://www.instagram.com/ktunailab/")!)
+                case "Linkedin":
+                UIApplication.shared.open(URL(string: "https://www.linkedin.com/company/ktun-ai-lab/")!)
+                case "Logo":
+                UIApplication.shared.open(URL(string: "https://ktunailab.com/")!)
+                default:
+                    print("Social Button Error: \(name) is not a valid social provide")
+            }
+        }label: {
             Image(name)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 25, height: 25)
+                .frame(width: 37, height: 37)
                 .frame(width: 105, height: 55)
                 .background(Color("DarkBlue"))
                 .cornerRadius(15)
