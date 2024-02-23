@@ -100,6 +100,7 @@ struct HomeView: View {
         Button(action: {
             alertService.showString(title: "Logout", message: "Logout button pressded")
             print("Logout")
+            UserSessionService.shared.signOut()
         }) {
             Image(systemName: "person.crop.circle.badge.xmark")
                 .resizable()

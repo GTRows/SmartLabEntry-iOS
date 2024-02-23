@@ -80,6 +80,18 @@ class UserSessionService: ObservableObject {
         user = nil
         firebaseUser = nil
     }
+    
+    func forgotPassword(email: String , completition: @escaping (Result<String, Error>) -> Void) {
+        auth.sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                print(error.localizedDescription)
+                completition(.failure(error))
+            } else {
+                print("Password reset email sent.")
+                completition(.success("Password reset email sent."))
+            }
+        }
+    }
 
     func setUserID(id: String) {
         withAnimation {

@@ -29,6 +29,10 @@ struct InitialView: View {
                     AuthView()
                 }
             }
+        }.onAppear() {
+            guard let userId = userSessionService.getCurrentUser() else { print("User not found"); return }
+            print("User Id: \(userId.uid)")
+            
         }
     }
 }

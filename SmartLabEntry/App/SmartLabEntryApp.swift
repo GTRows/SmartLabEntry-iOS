@@ -25,6 +25,7 @@ struct SmartLabEntryApp: App {
     var body: some Scene {
         WindowGroup {
             InitialView()
+                .environmentObject(UserSessionService.shared)
                 .preferredColorScheme(.light)
         }
     }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var isLogin = 0 // 0: Login, 1: Register First, 2: Register Second
     @State private var isPasswordVisible: Bool = false
     @State private var isSecondPasswordVisible: Bool = false
     @StateObject var alertService = AlertService.shared
@@ -45,27 +44,40 @@ struct AuthView: View {
         VStack {
             toggleLoginRegisterView
             
-            if isLogin == 0 { loginView }
-            else if isLogin == 1 { registerFirstView }
-            else if isLogin == 2 { registerSecondView }
+            if viewModel.isLogin == 0 { loginView }
+            else if viewModel.isLogin == 1 { registerFirstView }
+            else if viewModel.isLogin == 2 { registerSecondView }
+            else if viewModel.isLogin == 3 { forgotPasswordView }
             else { Text("Error") }
-
             Spacer()
         }
-        .frame(width: 350, height: isLogin == 0 ? 350 : 400)
+        .frame(width: 350, height: authenticationViewHeight) // Dinamik yükseklik
         .background(Color("LightColor"))
         .cornerRadius(20)
     }
 
+    var authenticationViewHeight: CGFloat {
+        switch viewModel.isLogin {
+        case 0:
+            return 350 // loginView için yükseklik
+        case 1, 2:
+            return 400 // registerFirstView ve registerSecondView için yükseklik
+        case 3:
+            return 250 // forgotPasswordView için yükseklik
+        default:
+            return 350 // Varsayılan yükseklik
+        }
+    }
+
     var toggleLoginRegisterView: some View {
         HStack {
-            AuthButton(title: "Login", isSelected: isLogin == 0) {
+            AuthButton(title: "Login", isSelected: viewModel.isLogin == 0) {
                 withAnimation {
-                    isLogin = 0
+                    viewModel.isLogin = 0
                 }
             }
-            AuthButton(title: "Register", isSelected: isLogin == 1 || isLogin == 2) { withAnimation {
-                isLogin = 1
+            AuthButton(title: "Register", isSelected: viewModel.isLogin == 1 || viewModel.isLogin == 2) { withAnimation {
+                viewModel.isLogin = 1
             } }
         }
         .frame(width: 320, height: 60)
@@ -101,7 +113,7 @@ struct AuthView: View {
             authTextField("Name", text: $viewModel.name)
             authTextField("Surname", text: $viewModel.surname)
             authTextField("School ID", text: $viewModel.schoolId)
-            actionButton("Next") { withAnimation { isLogin = 2 } }
+            actionButton("Next") { withAnimation { viewModel.isLogin = 2 } }
         }
     }
 
@@ -111,6 +123,13 @@ struct AuthView: View {
             passwordField(text: $viewModel.password, isVisible: $isPasswordVisible)
             passwordField(text: $viewModel.confirmPassword, isVisible: $isSecondPasswordVisible, placeholder: "Confirm Password")
             actionButton("Register") { print("Kayıt olundu") }
+        }
+    }
+
+    var forgotPasswordView: some View {
+        VStack {
+            authTextField("Email", text: $viewModel.email)
+            actionButton("Send") { print("Şifre sıfırlama maili gönderildi") }
         }
     }
 
@@ -151,8 +170,9 @@ struct AuthView: View {
         HStack {
             Spacer()
             Button {
-                print("Forgot Password")
-                alertService.showString(title: "forgotten", message: "not yet")
+                withAnimation {
+                    viewModel.isLogin = 3
+                }
             } label: {
                 Text("Forgot Password")
                     .font(.custom("Comfortaa", size: 12))
@@ -166,24 +186,28 @@ struct AuthView: View {
 
     func actionButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button {
-            if isLogin == 0 {
+            if viewModel.isLogin == 0 {
                 if viewModel.validateLoginPage() {
                     withAnimation {
                         viewModel.signIn()
                     }
                 }
-            } else if isLogin == 1 {
+            } else if viewModel.isLogin == 1 {
                 if viewModel.validateFirstPage() {
                     withAnimation {
-                        isLogin = 2
+                        viewModel.isLogin = 2
                     }
                 }
-            } else if isLogin == 2 {
+            } else if viewModel.isLogin == 2 {
                 if viewModel.validateSecondPage() {
                     withAnimation {
                         viewModel.signUp()
                     }
                 }
+            } else if viewModel.isLogin == 3 {
+                viewModel.forgotPassword()
+                
+
             } else {
                 alertService.showString(title: "Error", message: "Unknown error occurrer.\nCode: 0x0001")
             }

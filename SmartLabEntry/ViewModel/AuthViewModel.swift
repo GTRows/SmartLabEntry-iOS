@@ -15,9 +15,10 @@ class AuthViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var surname: String = ""
     @Published var schoolId: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "aciroglu.fatih@gmail.com"
+    @Published var password: String = "1234.Five"
     @Published var confirmPassword: String = ""
+    @Published var isLogin = 0
 
     private let auth = Auth.auth()
 
@@ -139,4 +140,28 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    func forgotPassword() {
+        // Validate the input fields
+        print("forgot Email: \(email)")
+        guard Validators.isValidEmail(email) else {
+            print("Email is not valid.")
+            AlertService.shared.showString(title: "Error", message: "Email is not valid.")
+            return
+        }
+        
+        // Call the forgotPassword method from UserSessionService
+        UserSessionService.shared.forgotPassword(email: email) { result in
+            switch result {
+            case .success(let message):
+                print(message)
+                AlertService.shared.showString(title: "Success", message: "Password reset email sent.")
+                withAnimation {
+                    self. isLogin = 0
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                AlertService.shared.showString(title: "Error", message: "Password reset failed: \(error.localizedDescription)")
+            }
+        }
+    }
 }
