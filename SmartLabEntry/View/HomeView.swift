@@ -69,17 +69,24 @@ struct HomeView: View {
                     .padding()
 
                 // Use ForEach instead of for loop
-                ForEach(viewModel.currentUsersTemp, id: \.userId) { user in
+                ForEach(Array(viewModel.currentUsersTemp.enumerated()), id: \.element.userId) { index, user in
                     HStack {
+                        // Sıralama numarası burada gösteriliyor
+                        Text("\(index + 1) -")
+                            .font(.custom("Comfortaa", size: 20))
+                            .fontWeight(.medium)
+                            .foregroundColor(Color("DarkBlue"))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
                         Text(user.userName)
-                            .font(.custom("Comfortaa", size: 25))
+                            .font(.custom("Comfortaa", size: 20))
                             .fontWeight(.medium)
                             .foregroundColor(Color("DarkBlue"))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                         Spacer()
                         Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
-                            .font(.custom("Comfortaa", size: 25))
+                            .font(.custom("Comfortaa", size: 20))
                             .fontWeight(.medium)
                             .foregroundColor(Color("DarkBlue"))
                             .multilineTextAlignment(.center)
@@ -88,6 +95,11 @@ struct HomeView: View {
                     .background(Color("LightColor"))
                     .cornerRadius(20)
                     .padding(.horizontal, 35)
+                    if viewModel.currentUsersTemp.last?.userId != user.userId {
+                        Rectangle()
+                            .fill(Color("DarkBlue"))
+                            .frame(width: 300, height: 1)
+                    }
                 }
 
                 Spacer()
@@ -102,7 +114,7 @@ struct HomeView: View {
             print("Logout")
             UserSessionService.shared.signOut()
         }) {
-            Image(systemName: "person.crop.circle.badge.xmark")
+            Image(systemName: "rectangle.portrait.and.arrow.right")
                 .resizable()
                 .frame(width: 40, height: 40)
                 .foregroundColor(Color("LightColor"))

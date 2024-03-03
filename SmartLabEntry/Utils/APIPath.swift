@@ -1,47 +1,36 @@
+//enum APIPath: String {
+//    case baseUrl = "https://lab.alperen.keenetic.link"
 //
-//  APIPath.swift
-//  SmartLabEntry
+//    // Auth API
+//    case registerApi = "/api/v0.1/auth/register"
 //
-//  Created by Fatih Acıroğlu on 15.11.2023.
+//    // USERS API
+//    case getMyUser = "/api/v0.2/users"
 //
-
-import Foundation
-
-// let usersAPI = APIPath.users.path
-// let cardsAPI = APIPath.cards.path
-// Diğer API yollarınız için de benzer şekilde kullanabilirsiniz.
-
-enum APIPath {
-    case users
-    case getUserData
-    case cards
-    case cardsTest
-    case doors
-    case accessPortals
-    case accessPortalsEntry
-    case accessPortalsExit
-
-    var path: String {
-        let baseHost = "http://94.54.108.76:8080"
-        let apiVersion = "api/v0.1"
-
-        switch self {
-        case .users:
-            return "\(baseHost)/\(apiVersion)/users"
-        case .getUserData:
-            return "\(baseHost)/api/v0.2/users/me"
-        case .cards:
-            return "\(baseHost)/\(apiVersion)/cards"
-        case .cardsTest:
-            return "\(baseHost)/\(apiVersion)/cards/test"
-        case .doors:
-            return "\(baseHost)/\(apiVersion)/doors"
-        case .accessPortals:
-            return "\(baseHost)/\(apiVersion)/accessPortals"
-        case .accessPortalsEntry:
-            return "\(baseHost)/\(apiVersion)/accessPortals/entry"
-        case .accessPortalsExit:
-            return "\(baseHost)/\(apiVersion)/accessPortals/exit"
-        }
-    }
-}
+//    // ACCESS PORTALS API
+//    case getAllAccessPortals = "/api/v0.2/access-portals/my-all"
+//    case getAccessiblePortals = "/api/v0.2/access-portals"
+//    case getPortalStatus = "/api/v0.2/access-portals/portal-status"
+//    case enterAccessPortal = "/api/v0.2/access-portals/enter"
+//    case exitAccessPortal = "/api/v0.2/access-portals/exit"
+//
+//    // ADMIN API
+//    case getNotVerifiedUsers = "/api/v0.2/admin/not-verified-user"
+//    case assignRfid = "/api/v0.2/admin/assign-rfid"
+//    case verifiyUser = "/api/v0.2/admin/verify-user"
+//    case getAllUsers = "/api/v0.2/users/all"
+//    case openDoor = "/api/v0.2/admin/open-access-portal"
+//    case onLearningMode = "/api/v0.2/admin/access-portals/on-learning-mode"
+//    case offLearningMode = "/api/v0.2/admin/access-portals/off-learning-mode"
+//    case getUnknownRfid = "/api/v0.2/admin/access-portals/get-unknown-rfid"
+//    case asignUnknownRfid = "/api/v0.2/admin/access-portals/asign-unknown-rfid"
+//
+//    var urlString: String {
+//        switch self {
+//        case .baseUrl:
+//            return self.rawValue
+//        default:
+//            return "\(APIPath.baseUrl.rawValue)\(self.rawValue)"
+//        }
+//    }
+//}

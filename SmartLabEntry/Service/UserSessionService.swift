@@ -49,14 +49,14 @@ class UserSessionService: ObservableObject {
     }
 
     func createUser(requestBody: [String: Any], completition: @escaping (Result<String, Error>) -> Void) {
-        APIService.shared.registerUser(requestBody: requestBody) { Result in
-            switch Result {
-            case let .success(message):
-                completition(.success(message))
-            case let .failure(error):
-                completition(.failure(error))
-            }
-        }
+//        APIService.shared.registerUser(requestBody: requestBody) { Result in
+//            switch Result {
+//            case let .success(message):
+//                completition(.success(message))
+//            case let .failure(error):
+//                completition(.failure(error))
+//            }
+//        }
     }
 
     func loginUser(email: String, password: String, completition: @escaping (Result<String, Error>) -> Void) {
