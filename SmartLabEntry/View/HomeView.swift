@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftUIPager
+import SwipeActions
 
 struct HomeView: View {
     @StateObject var alertService = AlertService.shared
@@ -68,40 +69,43 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                     .padding()
 
-                // Use ForEach instead of for loop
-                ForEach(Array(viewModel.currentUsersTemp.enumerated()), id: \.element.userId) { index, user in
+                ForEach(viewModel.currentUsersTemp, id: \.userId) { user in
                     HStack {
-                        // Sıralama numarası burada gösteriliyor
-                        Text("\(index + 1) -")
-                            .font(.custom("Comfortaa", size: 20))
-                            .fontWeight(.medium)
-                            .foregroundColor(Color("DarkBlue"))
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
                         Text(user.userName)
-                            .font(.custom("Comfortaa", size: 20))
+                            .font(.custom("Comfortaa", size: 25))
                             .fontWeight(.medium)
                             .foregroundColor(Color("DarkBlue"))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
-                        Spacer()
-                        Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
-                            .font(.custom("Comfortaa", size: 20))
-                            .fontWeight(.medium)
-                            .foregroundColor(Color("DarkBlue"))
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
+                            .cornerRadius(20)
+                            .padding(.horizontal, 35)
+                        SwipeView {
+                            Spacer()
+                            Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
+                                .font(.custom("Comfortaa", size: 25))
+                                .fontWeight(.medium)
+                                .foregroundColor(Color("DarkBlue"))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                                .cornerRadius(20)
+                        } trailingActions: { _ in
+                            Button {
+                                alertService.showString(title: "Remove user", message: "Remove user button pressed")
+                                print("Remove user")
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(Color.red)
+                            }
+                        }.padding(.horizontal, 35)
                     }
-                    .background(Color("LightColor"))
-                    .cornerRadius(20)
-                    .padding(.horizontal, 35)
                     if viewModel.currentUsersTemp.last?.userId != user.userId {
                         Rectangle()
                             .fill(Color("DarkBlue"))
                             .frame(width: 300, height: 1)
                     }
                 }
-
                 Spacer()
             }
         }
@@ -114,7 +118,7 @@ struct HomeView: View {
             print("Logout")
             UserSessionService.shared.signOut()
         }) {
-            Image(systemName: "rectangle.portrait.and.arrow.right")
+            Image(systemName: "person.crop.circle.badge.xmark")
                 .resizable()
                 .frame(width: 40, height: 40)
                 .foregroundColor(Color("LightColor"))

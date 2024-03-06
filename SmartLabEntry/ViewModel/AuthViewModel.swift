@@ -12,12 +12,12 @@ import SwiftUI
 class AuthViewModel: ObservableObject {
     @Published var user: UserModel?
     @Published var isUserLoggedIn: Bool = false
-    @Published var name: String = ""
-    @Published var surname: String = ""
-    @Published var schoolId: String = ""
+    @Published var name: String = "TestRemoveMe"
+    @Published var surname: String = "TestRemoveMePls"
+    @Published var schoolId: String = "123123123"
     @Published var email: String = "aciroglu.fatih@gmail.com"
     @Published var password: String = "1234.Five"
-    @Published var confirmPassword: String = ""
+    @Published var confirmPassword: String = "1234.Five"
     @Published var isLogin = 0
 
     private let auth = Auth.auth()
@@ -84,22 +84,23 @@ class AuthViewModel: ObservableObject {
     func signUp() {
 //        TODO: control is user already registered with mail or school id or name and surname on backend
 
-        let requestBody = [
-            "firstName": name,
-            "lastName": surname,
-            "schoolId": schoolId,
-            "email": email,
-            "password": password,
-        ]
+        let requestBody: UserRegistrationRequest = UserRegistrationRequest(
+            firstName: name,
+            lastName: surname,
+            schoolId: schoolId,
+            email: email,
+            password: password
+        )
 
-        UserSessionService.shared.createUser(requestBody: requestBody) { Result in
-            switch Result {
+        UserService.shared.registerApi(userRegistrationRequest: requestBody) { [weak self] result in
+            switch result {
             case let .success(message):
                 print(message)
-                AlertService.shared.showString(title: "Register successfull", message: message)
+                AlertService.shared.showString(title: "Success", message: "You are now registered.")
+                self?.isLogin = 1
             case let .failure(error):
-                print(error)
-                AlertService.shared.show(error: error)
+                print(error.localizedDescription)
+                AlertService.shared.showString(title: "Error", message: "Registration failed: \(error.localizedDescription)")
             }
         }
     }
@@ -113,16 +114,16 @@ class AuthViewModel: ObservableObject {
         // Call the signIn method from UserSessionService
         UserSessionService.shared.loginUser(email: email, password: password) { [weak self] result in
             switch result {
-            case .success(let message):
+            case let .success(message):
                 print(message)
                 AlertService.shared.showString(title: "Success", message: "You are now logged in.")
 
                 // Retrieve the bearer token
                 UserSessionService.shared.getBearerToken { tokenResult in
                     switch tokenResult {
-                    case .success(let token):
+                    case let .success(token):
                         print("Bearer Token: \(token)")
-                    case .failure(let error):
+                    case let .failure(error):
                         print("Error retrieving token: \(error.localizedDescription)")
                     }
 
@@ -132,8 +133,8 @@ class AuthViewModel: ObservableObject {
                         self?.user = UserSessionService.shared.getUser()
                     }
                 }
-                
-            case .failure(let error):
+
+            case let .failure(error):
                 print(error.localizedDescription)
                 AlertService.shared.showString(title: "Error", message: "Login failed: \(error.localizedDescription)")
             }
@@ -148,17 +149,17 @@ class AuthViewModel: ObservableObject {
             AlertService.shared.showString(title: "Error", message: "Email is not valid.")
             return
         }
-        
+
         // Call the forgotPassword method from UserSessionService
         UserSessionService.shared.forgotPassword(email: email) { result in
             switch result {
-            case .success(let message):
+            case let .success(message):
                 print(message)
                 AlertService.shared.showString(title: "Success", message: "Password reset email sent.")
                 withAnimation {
                     self.isLogin = 0
                 }
-            case .failure(let error):
+            case let .failure(error):
                 print(error.localizedDescription)
                 AlertService.shared.showString(title: "Error", message: "Password reset failed: \(error.localizedDescription)")
             }
