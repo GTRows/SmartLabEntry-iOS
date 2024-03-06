@@ -11,7 +11,10 @@ import Foundation
 import SwiftUI
 
 class UserSessionService: ObservableObject {
-    private init() {}
+    private init() {
+        firebaseUser = Auth.auth().currentUser
+        userID = firebaseUser?.uid ?? ""
+    }
     static let shared = UserSessionService()
 
 //    let storage = Storage.storage()

@@ -10,7 +10,7 @@ import SwiftUIPager
 
 class HomeViewModel: ObservableObject {
     @Published var name = "Name"
-    
+
     @Published var accessPortalList: [AccessPortalModel] = []
     @Published var currentPage: Page = .first()
     @Published var currentUsersTemp: [CurrentUserModel] = []
@@ -36,11 +36,20 @@ class HomeViewModel: ObservableObject {
 //            CurrentUserModel(userId: "10", userName: "Ali", userEnteredTime: Date()),
         ]
     }
-    
+
     // Card Changed
     func cardChanged(card: AccessPortalModel) {
         print("Card Changed: \(card.name)")
     }
-    
-    
+
+    func getBearerToken() {
+        UserSessionService.shared.getBearerToken { result in
+            switch result {
+            case let .success(token):
+                print("Token: \(token)")
+            case let .failure(error):
+                AlertService.shared.show(error: error)
+            }
+        }
+    }
 }

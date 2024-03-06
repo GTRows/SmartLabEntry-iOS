@@ -22,6 +22,14 @@ struct HomeView: View {
                 Spacer()
                 settingsButtonView
                     .padding(.trailing, 30)
+                Button {
+                    viewModel.getBearerToken()
+                } label: {
+                    Image(systemName: "power")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color("DarkBlue"))
+                }
             }
             cardsView
             currentView

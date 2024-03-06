@@ -13,6 +13,7 @@ enum NetworkError: Error, LocalizedError {
     case decodingError
     case forbidden
     case unexpectedStatusCode(statusCode: Int, message: String)
+    case failedToConvertResponseDataToDictionary
     case unknown
 
     var errorDescription: String? {
@@ -27,6 +28,8 @@ enum NetworkError: Error, LocalizedError {
             return "Access denied. You do not have permission to access this resource."
         case .unexpectedStatusCode(let statusCode, let message):
             return "Unexpected error occurred. Status Code: \(statusCode). Message: \(message)"
+        case .failedToConvertResponseDataToDictionary:
+            return "Failed to convert response data to dictionary."
         case .unknown:
             return "An unknown error occurred."
         }
