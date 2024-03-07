@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0815EEBF2B94EEF7006F0B95 /* StringConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0815EEBE2B94EEF7006F0B95 /* StringConverter.swift */; };
+		0818243B2B9A45CF00699720 /* SettingsPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818243A2B9A45CF00699720 /* SettingsPopUpView.swift */; };
 		0818F2B32B035A3B0086BA2C /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818F2B22B035A3B0086BA2C /* Validators.swift */; };
 		081B133E2B10FF4A0037DECB /* PagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081B133D2B10FF4A0037DECB /* PagerView.swift */; };
 		081B13412B113F1D0037DECB /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 081B13402B113F1D0037DECB /* SwiftUIPager */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		0815EEBE2B94EEF7006F0B95 /* StringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConverter.swift; sourceTree = "<group>"; };
+		0818243A2B9A45CF00699720 /* SettingsPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopUpView.swift; sourceTree = "<group>"; };
 		0818F2B22B035A3B0086BA2C /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		081B133D2B10FF4A0037DECB /* PagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerView.swift; sourceTree = "<group>"; };
 		082A689F2B04AE0F0065E136 /* config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
@@ -97,7 +99,7 @@
 		08D9F79A2B0CDE5400C44C92 /* CardCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCellView.swift; sourceTree = "<group>"; };
 		08E2AC992AE9E888008E9EB3 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		08E2AC9B2AE9E8CE008E9EB3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
-		08E2AC9E2AE9EE46008E9EB3 /* Comfortaa.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Comfortaa.ttf; sourceTree = "<group>"; };
+		08E2AC9E2AE9EE46008E9EB3 /* Comfortaa.ttf */ = {isa = PBXFileReference; lastKnownFileType = text; path = Comfortaa.ttf; sourceTree = "<group>"; };
 		08E2ACA02AE9EEE9008E9EB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -309,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				08D9F79A2B0CDE5400C44C92 /* CardCellView.swift */,
+				0818243A2B9A45CF00699720 /* SettingsPopUpView.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				08334DE32B25243F0080AADA /* AuthViewModel.swift in Sources */,
 				081B133E2B10FF4A0037DECB /* PagerView.swift in Sources */,
 				083175A42B0342A0007D1684 /* Constants.swift in Sources */,
+				0818243B2B9A45CF00699720 /* SettingsPopUpView.swift in Sources */,
 				08D7F2092B0A49230088FD48 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
