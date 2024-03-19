@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct UserStatusResponse: Codable {
+    var isVerified: Bool
+    var isKicked: Bool
+}

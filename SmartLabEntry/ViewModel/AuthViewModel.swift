@@ -92,7 +92,7 @@ class AuthViewModel: ObservableObject {
             password: password
         )
 
-        UserService.shared.registerApi(userRegistrationRequest: requestBody) { [weak self] result in
+        UserService.registerApi(userRegistrationRequest: requestBody) { [weak self] result in
             switch result {
             case let .success(message):
                 print(message)

@@ -8,27 +8,56 @@
 import Alamofire
 import Foundation
 
-//static let getAllAccessPortals = "\(accessPath)/my-all"
-//static let getAccessiblePortals = "\(accessPath)"
-//static let getPortalStatus = "\(accessPath)/portal-status"
-//static let enterAccessPortal = "\(accessPath)enter"
-//static let exitAccessPortal = "\(accessPath)/exit"
-//static let resetDoor = "\(accessPath)/reset-reader"
+struct AccessPortalService {
+    static func getAllAccessPortals(completion: @escaping (Result<[AccessPortalModel], Error>) -> Void) {
+        BaseService.sendRequest(to: ApiPath.getAllAccessPortals, method: .get, useToken: true) { result in
+            BaseService.processResponse(result: result, completion: completion)
+        }
+    }
 
-class AccessPortalService {
-    static let shared = AccessPortalService()
-    private init() {}
-    
-    func getAllAccessPortals(completion: @escaping (Result<[AccessPortalModel], Error>) -> Void) {
-        BaseService.shared.sendRequest(to: ApiPath.getAllAccessPortals, method: .get, useToken: true) { result in
-            BaseService.shared.processResponse(result: result, completion: completion)
+    static func getAccessiblePortals(completion: @escaping (Result<[AccessPortalModel], Error>) -> Void) {
+        BaseService.sendRequest(to: ApiPath.getAccessiblePortals, method: .get, useToken: true) { result in
+            BaseService.processResponse(result: result, completion: completion)
         }
     }
-    
-    func getAccessiblePortals(completion: @escaping (Result<[AccessPortalModel], Error>) -> Void) {
-        BaseService.shared.sendRequest(to: ApiPath.getAccessiblePortals, method: .get, useToken: true) { result in
-            BaseService.shared.processResponse(result: result, completion: completion)
+
+    static func getPortalStatus(accessPortalRequest: AccessPortalRequest, completion: @escaping (Result<AccessPortalStatusResponse, Error>) -> Void) {
+        if let parameters = NetworkUtility.encodeRequest(accessPortalRequest) {
+            BaseService.sendRequest(to: ApiPath.getPortalStatus, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: true) { result in
+                BaseService.processResponse(result: result, completion: completion)
+            }
+        } else {
+            completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
         }
     }
-    
+
+    static func enterAccessPortal(accessPortalRequest: AccessPortalRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
+        if let parameters = NetworkUtility.encodeRequest(accessPortalRequest) {
+            BaseService.sendRequest(to: ApiPath.enterAccessPortal, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: true) { result in
+                BaseService.processResponse(result: result, completion: completion)
+            }
+        } else {
+            completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
+        }
+    }
+
+    static func exitAccessPortal(accessPortalRequest: AccessPortalRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
+       if let parameters = NetworkUtility.encodeRequest(accessPortalRequest) {
+           BaseService.sendRequest(to: ApiPath.exitAccessPortal, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: true) { result in
+               BaseService.processResponse(result: result, completion: completion)
+           }
+       } else {
+           completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
+       }
+    }
+
+    static func resetDoor(resetPortalRequest: ResetPortalRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
+        if let parameters = NetworkUtility.encodeRequest(resetPortalRequest) {
+            BaseService.sendRequest(to: ApiPath.resetDoor, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: true) { result in
+                BaseService.processResponse(result: result, completion: completion)
+            }
+        } else {
+            completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
+        }
+    }
 }

@@ -31,8 +31,8 @@ enum NetworkError: Error, LocalizedError {
         case .serverError:
             return 500
         case let .errorMessages(statusCode, _),
-            let .badRequest(statusCode, _),
-            let .unexpectedStatusCode(statusCode):
+             let .badRequest(statusCode, _),
+             let .unexpectedStatusCode(statusCode):
             return statusCode
         default:
             return 0
@@ -58,7 +58,7 @@ enum NetworkError: Error, LocalizedError {
         case let .unexpectedStatusCode(statusCode):
             return "Unexpected HTTP status code received: \(statusCode)."
         case let .errorMessages(_, message),
-            let .badRequest(_, message):
+             let .badRequest(_, message):
             return "\(message)"
         default:
             return "An unknown error occurred."

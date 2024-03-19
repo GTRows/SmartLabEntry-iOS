@@ -8,28 +8,26 @@
 import Alamofire
 import Foundation
 
-class UserService {
-    static let shared = UserService()
-    private init() {}
-
-    func registerApi(userRegistrationRequest: UserRegistrationRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
-        do {
-            let jsonData = try JSONEncoder().encode(userRegistrationRequest)
-            let parameters = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? Parameters
-
-            BaseService.shared.sendRequest(to: ApiPath.registerApi, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: false) { result in
-                BaseService.shared.processResponse(result: result, completion: completion)
+struct UserService {
+    static func registerApi(userRegistrationRequest: UserRegistrationRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
+        if let parameters = NetworkUtility.encodeRequest(userRegistrationRequest) {
+            BaseService.sendRequest(to: ApiPath.registerApi, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: false) { result in
+                BaseService.processResponse(result: result, completion: completion)
             }
-        } catch {
-            completion(.failure(error))
+        } else {
+            completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
         }
     }
 
-
-    func getUserDetails(completion: @escaping (Result<UserDetailsResponse, Error>) -> Void) {
-        BaseService.shared.sendRequest(to: ApiPath.getMyUser, method: .get, useToken: true) { result in
-            BaseService.shared.processResponse(result: result, completion: completion)
+    static func getUserDetails(completion: @escaping (Result<UserDetailsResponse, Error>) -> Void) {
+        BaseService.sendRequest(to: ApiPath.getMyUser, method: .get, useToken: true) { result in
+            BaseService.processResponse(result: result, completion: completion)
         }
     }
 
+    static func getUserStatus(completion: @escaping (Result<UserStatusResponse, Error>) -> Void) {
+        BaseService.sendRequest(to: ApiPath.getMyStatus, method: .get, useToken: true) { result in
+            BaseService.processResponse(result: result, completion: completion)
+        }
+    }
 }
