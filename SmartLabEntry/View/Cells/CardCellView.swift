@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+enum ActionButtonState {
+    case Enter
+    case Exit
+    case Loading
+}
+
 struct CardCellView: View {
     @State var isUserInSession: Bool = false
+    @State var buttonState: ActionButtonState = .Loading
     @State var accessPortal: AccessPortalModel
 
     init(accessPortal: AccessPortalModel) {
         self.accessPortal = accessPortal
+        self.buttonState = self.isUserInSession ? .Exit : .Enter
     }
 
     var body: some View {
@@ -41,27 +49,46 @@ struct CardCellView: View {
             logoImage
             detailsVStack
         }
+        .padding(.bottom, 5)
     }
 
     private var logoImage: some View {
         Image(accessPortal.logoName)
             .resizable()
-            .frame(width: 100, height: 100)
+            .frame(width: 75, height: 75)
             .padding(.leading, 40)
+            .padding(.bottom, 5)
     }
 
     private var detailsVStack: some View {
         VStack {
-            name
+            HStack {
+                name
+                restartButton
+            }
             status
             capacity
+        }.padding(.top, 5)
+    }
+
+    private var restartButton: some View {
+        Button(action: {
+            // Burada butonun işlevselliği yer alacak.
+        }) {
+            Image(systemName: "lock.rotation")
+                .resizable()
+                .foregroundColor(Color("DarkBlue"))
+                .scaleEffect(x: -1, y: 1)
+                .frame(width: 20, height: 20)
+                .padding(.trailing, 45)
         }
     }
 
     private var name: some View {
         HStack {
             Text(accessPortal.name)
-                .customStyle(size: 30, fontWeight: .bold)
+                .customStyle(size: 20, fontWeight: .bold)
+                .padding(.leading, 10)
             Spacer()
         }
     }
@@ -69,10 +96,11 @@ struct CardCellView: View {
     private var status: some View {
         HStack {
             statusIndicator
-            Text(accessPortal.isOpen ? "Online" : "Offline")
+            Text(accessPortal.isOpen ? "Open" : "Close")
+                .foregroundColor(accessPortal.isOpen ? .green : .red)
                 .customStyle()
             Spacer()
-        }
+        }.padding(.bottom, 5)
     }
 
     private var capacity: some View {
@@ -80,10 +108,10 @@ struct CardCellView: View {
             Image(systemName: "person.fill")
                 .foregroundColor(Color("DarkBlue"))
                 .padding(.leading, 20)
-            Text("\(accessPortal.currentUsersId.count)/\(accessPortal.maxCapacity)")
+            Text("\(accessPortal.currentUsersId.count) / \(accessPortal.maxCapacity)")
                 .customStyle()
             Spacer()
-        }
+        }.padding(.bottom, 5)
     }
 
     private var statusIndicator: some View {
@@ -95,7 +123,7 @@ struct CardCellView: View {
 
     private var sessionButton: some View {
         Button(action: buttonPressed) {
-            Text(isUserInSession ? "Exit" : "Join")
+            Text(isUserInSession ? "Exit" : "Enter")
                 .sessionButtonStyle(isInSession: isUserInSession)
         }
     }
@@ -119,12 +147,12 @@ extension Text {
         font(.custom("Comfortaa", size: 20))
             .fontWeight(.bold)
             .foregroundColor(Color.white)
-            .frame(width: 200, height: 50)
+            .frame(width: 150, height: 35)
             .background(isInSession ? Color.red : Color.green)
             .cornerRadius(20)
     }
 }
 
- #Preview {
-    CardCellView(accessPortal: AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: ["asd","123","1233"], logoName: "star"))
- }
+#Preview {
+    CardCellView(accessPortal: AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: ["asd", "123", "1233"], logoName: "Logo_2"))
+}

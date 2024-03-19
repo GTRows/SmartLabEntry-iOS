@@ -97,7 +97,7 @@ struct AdminService {
             completion(.failure(NSError(domain: "EncodingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request"])))
         }
     }
-    w
+    
     static func assignUnknownRfid(assignRfidRequest: AssignRfidRequest, completion: @escaping (Result<GenericResponse, Error>) -> Void) {
         if let parameters = NetworkUtility.encodeRequest(assignRfidRequest) {
             BaseService.sendRequest(to: ApiPath.assignUnknownRfid, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil, useToken: true) { result in

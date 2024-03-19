@@ -19,6 +19,7 @@ struct SettingsPopUpView: View {
             SelectView
             DividerBetweenButtons
             SelectView
+            BottomVoidView
         }.ignoresSafeArea()
     }
 
@@ -70,7 +71,7 @@ struct SettingsPopUpView: View {
             Rectangle()
                 .frame(height: 2)
                 .foregroundColor(Color(.gray))
-                .padding(.horizontal,25)
+                .padding(.horizontal, 25)
         }.frame(height: 20)
     }
 
@@ -80,12 +81,18 @@ struct SettingsPopUpView: View {
                 .resizable()
                 .frame(width: 30, height: 30)
                 .foregroundColor(Color("DarkBlue"))
-                .padding(.vertical,20)
+                .padding(.vertical, 20)
             Text("Occupants in the room")
                 .font(.custom("Quicksand SemiBold", size: 20))
                 .foregroundColor(Color("DarkBlue"))
                 .padding(.horizontal, 25)
         }
+    }
+
+    var BottomVoidView: some View {
+        Rectangle()
+            .frame(height: 50)
+            .foregroundColor(Color("LightColor"))
     }
 }
 

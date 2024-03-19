@@ -22,14 +22,6 @@ struct HomeView: View {
                 Spacer()
                 settingsButtonView
                     .padding(.trailing, 30)
-                Button {
-                    viewModel.getBearerToken()
-                } label: {
-                    Image(systemName: "power")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(Color("DarkBlue"))
-                }
             }
             cardsView
             currentView
@@ -70,49 +62,48 @@ struct HomeView: View {
                 .frame(width: 350)
                 .cornerRadius(20)
             VStack {
-                Text("Occupants in the room")
-                    .font(.custom("Comfortaa", size: 20))
+                Text("\(viewModel.accessPortalList[viewModel.currentPage.index].name)\nOccupants in the room")
+                    .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(Color("DarkBlue"))
                     .multilineTextAlignment(.center)
                     .padding()
 
-                ForEach(viewModel.currentUsersTemp, id: \.userId) { user in
-                    HStack {
-                        Text(user.userName)
-                            .font(.custom("Comfortaa", size: 25))
+                ForEach(Array(viewModel.currentUsersTemp.enumerated()), id: \.element.userId) { index, user in HStack {
+                    Text("\(index + 1) - \(user.userName)")
+                        .font(.custom("Comfortaa", size: 20))
+                        .foregroundColor(Color("DarkBlue"))
+                        .multilineTextAlignment(.center)
+                        .lineLimit(1)
+                        .padding(.horizontal)
+                        .cornerRadius(20)
+                        .padding(.horizontal, 35)
+                    SwipeView {
+                        Spacer()
+                        Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
+                            .font(.custom("Comfortaa", size: 20))
                             .fontWeight(.medium)
                             .foregroundColor(Color("DarkBlue"))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                             .cornerRadius(20)
-                            .padding(.horizontal, 35)
-                        SwipeView {
-                            Spacer()
-                            Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
-                                .font(.custom("Comfortaa", size: 25))
-                                .fontWeight(.medium)
-                                .foregroundColor(Color("DarkBlue"))
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                                .cornerRadius(20)
-                        } trailingActions: { _ in
-                            Button {
-                                alertService.showString(title: "Remove user", message: "Remove user button pressed")
-                                print("Remove user")
-                            } label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .foregroundColor(Color.red)
-                            }
-                        }.padding(.horizontal, 35)
-                    }
-                    if viewModel.currentUsersTemp.last?.userId != user.userId {
-                        Rectangle()
-                            .fill(Color("DarkBlue"))
-                            .frame(width: 300, height: 1)
-                    }
+                    } trailingActions: { _ in
+                        Button {
+                            alertService.showString(title: "Remove user", message: "Remove user button pressed")
+                            print("Remove user")
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(Color.red)
+                        }
+                    }.padding(.horizontal, 35)
+                }
+                if viewModel.currentUsersTemp.last?.userId != user.userId {
+                    Rectangle()
+                        .fill(Color("DarkBlue"))
+                        .frame(width: 300, height: 1)
+                }
                 }
                 Spacer()
             }
@@ -126,9 +117,9 @@ struct HomeView: View {
             print("Logout")
             UserSessionService.shared.signOut()
         }) {
-            Image(systemName: "person.crop.circle.badge.xmark")
+            Image(systemName: "person.fill")
                 .resizable()
-                .frame(width: 40, height: 40)
+                .frame(width: 20, height: 20)
                 .foregroundColor(Color("LightColor"))
         }
     }
@@ -137,18 +128,19 @@ struct HomeView: View {
         HStack {
             VStack {
                 Text("Hi, \(viewModel.name)!")
-                    .font(.custom("Comfortaa", size: 40))
+                    .font(.custom("Comfortaa", size: 35))
                     .fontWeight(.bold)
                     .foregroundColor(Color("LightColor"))
                     .multilineTextAlignment(.leading)
-                    .padding(.leading, 20)
+                    .frame(width: 250, alignment: .leading)
                 Text("Welcome to AI Lab!")
                     .font(.custom("Comfortaa", size: 15))
                     .fontWeight(.medium)
                     .foregroundColor(Color("LightColor"))
                     .multilineTextAlignment(.leading)
+                    .frame(width: 250, alignment: .leading)
             }
-        }
+        }.padding(.leading, 20)
     }
 }
 
