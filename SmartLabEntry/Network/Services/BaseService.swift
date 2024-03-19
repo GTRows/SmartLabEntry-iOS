@@ -67,16 +67,49 @@ class BaseService {
         }
     }
 
-    func handleResponseStatusCode(_ statusCode: Int, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func handleResponseStatusCode(statusCode: Int, message: String) -> Result<Bool, NetworkError> {
         switch statusCode {
-        case 200, 201:
-            completion(.success(()))
+        case 200 ... 299:
+            return .success(true)
         case 400:
-            completion(.failure(.invalidResponse))
+            return .failure(.badRequest(statusCode: statusCode, message: message))
+        case 401:
+            return .failure(.unauthorized)
         case 403:
-            completion(.failure(.forbidden))
+            return .failure(.forbidden)
+        case 404:
+            return .failure(.notFound)
+        case 500 ... 599:
+            return .failure(.serverError)
         default:
-            completion(.failure(.unexpectedStatusCode(statusCode: statusCode, message: "")))
+            return .failure(.errorMessages(statusCode: statusCode, message: message))
+        }
+    }
+
+    func processResponse<T: Decodable>(
+        result: Result<(statusCode: Int, responseString: String?), Error>,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
+        switch result {
+        case let .success(response):
+            let statusCodeResult = BaseService.shared.handleResponseStatusCode(statusCode: response.statusCode, message: response.responseString!)
+            switch statusCodeResult {
+            case .success:
+                guard let responseString = response.responseString, let data = responseString.data(using: .utf8) else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response data"])))
+                    return
+                }
+                do {
+                    let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(.success(decodedResponse))
+                } catch {
+                    completion(.failure(NetworkError.errorMessages(statusCode: response.statusCode, message: response.responseString!)))
+                }
+            case let .failure(networkError):
+                completion(.failure(networkError))
+            }
+        case let .failure(error):
+            completion(.failure(error))
         }
     }
 }

@@ -14,26 +14,32 @@ struct ApiPath {
     static let registerApi = "/auth/register"
 
     // USERS API
-    static let getMyUser = "/users"
+    static private let usersPath = "/users"
+    static let getMyUser = "\(usersPath)"
+    static let getMyStatus = "\(usersPath)/my-status"
+
 
     // ACCESS PORTALS API
-    static let getAllAccessPortals = "/access-portals/my-all"
-    static let getAccessiblePortals = "/access-portals"
-    static let getPortalStatus = "/access-portals/portal-status"
-    static let enterAccessPortal = "/access-portals/enter"
-    static let exitAccessPortal = "/access-portals/exit"
-    static let resetDoor = "/access-portals/reset-reader"
+    static private let accessPath = "/access-portals"
+    static let getAllAccessPortals = "\(accessPath)/my-all"
+    static let getAccessiblePortals = "\(accessPath)"
+    static let getPortalStatus = "\(accessPath)/portal-status"
+    static let enterAccessPortal = "\(accessPath)enter"
+    static let exitAccessPortal = "\(accessPath)/exit"
+    static let resetDoor = "\(accessPath)/reset-reader"
 
     // ADMIN API
-    static let getNotVerifiedUsers = "/admin/not-verified-user"
-    static let assignRfid = "/admin/assign-rfid"
-    static let verifyUser = "/admin/verify-user"
-    static let getAllUsers = "/users/all"
-    static let openDoor = "/admin/open-access-portal"
-    static let openCloseAccessPortal = "/admin/access-portals/open-close-portal"
-    static let onLearningMode = "/admin/access-portals/on-learning-mode"
-    static let offLearningMode = "/admin/access-portals/off-learning-mode"
-    static let getUnknownRfid = "/admin/access-portals/get-unknown-rfid"
-    static let assignUnknownRfid = "/admin/access-portals/assign-unknown-rfid"
+    static private let adminPath = "/admin"
+    static let getNotVerifiedUsers = "\(adminPath)/not-verified-user"
+    static let assignRfid = "\(adminPath)/assign-rfid"
+    static let verifyUser = "\(adminPath)/verify-user"
+    static let getAllUsers = "\(adminPath)/get-all-users"
+    static let openDoor = "\(adminPath)\(accessPath)/open-access-portal"
+    static let openCloseAccessPortal = "\(adminPath)\(accessPath)/open-close-portal"
+    static let onLearningMode = "\(adminPath)\(accessPath)/on-learning-mode"
+    static let offLearningMode = "\(adminPath)\(accessPath)/off-learning-mode"
+    static let getUnknownRfid = "\(adminPath)\(accessPath)/get-unknown-rfid"
+    static let assignUnknownRfid = "\(adminPath)\(accessPath)/assign-unknown-rfid"
+    static let kickUser = "\(adminPath)\(accessPath)/kick-user"
 }
 
