@@ -23,8 +23,7 @@ struct AuthView: View {
             Spacer()
         }
         .background(
-            LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
+            AppTheme.backgroundGradientView
         )
         .alert(isPresented: $alertService.isPresenting) {
             alertService.alert
@@ -32,10 +31,10 @@ struct AuthView: View {
     }
 
     var headerView: some View {
-        Text("ai lab")
+        Text(Localization.ailab)
             .font(.custom("Comfortaa", size: 100))
             .fontWeight(.bold)
-            .foregroundColor(Color("LightColor"))
+            .foregroundColor(AppTheme.lightColor)
             .multilineTextAlignment(.center)
             .padding(.bottom, 20)
     }
@@ -48,40 +47,40 @@ struct AuthView: View {
             else if viewModel.isLogin == 1 { registerFirstView }
             else if viewModel.isLogin == 2 { registerSecondView }
             else if viewModel.isLogin == 3 { forgotPasswordView }
-            else { Text("Error") }
+            else { Text(Localization.error) }
             Spacer()
         }
-        .frame(width: 350, height: authenticationViewHeight) // Dinamik yükseklik
-        .background(Color("LightColor"))
+        .frame(width: 350, height: authenticationViewHeight)
+        .background(AppTheme.lightColor)
         .cornerRadius(20)
     }
 
     var authenticationViewHeight: CGFloat {
         switch viewModel.isLogin {
         case 0:
-            return 350 // loginView için yükseklik
+            return 350
         case 1, 2:
-            return 400 // registerFirstView ve registerSecondView için yükseklik
+            return 400
         case 3:
-            return 250 // forgotPasswordView için yükseklik
+            return 250
         default:
-            return 350 // Varsayılan yükseklik
+            return 350
         }
     }
 
     var toggleLoginRegisterView: some View {
         HStack {
-            AuthButton(title: "Login", isSelected: viewModel.isLogin == 0) {
+            AuthButton(title: Localization.Login, isSelected: viewModel.isLogin == 0) {
                 withAnimation {
                     viewModel.isLogin = 0
                 }
             }
-            AuthButton(title: "Register", isSelected: viewModel.isLogin == 1 || viewModel.isLogin == 2) { withAnimation {
+            AuthButton(title: Localization.Register, isSelected: viewModel.isLogin == 1 || viewModel.isLogin == 2) { withAnimation {
                 viewModel.isLogin = 1
             } }
         }
         .frame(width: 320, height: 60)
-        .background(Color("Blue"))
+        .background(AppTheme.blueColor)
         .cornerRadius(20)
         .padding(.vertical)
     }
@@ -89,47 +88,47 @@ struct AuthView: View {
     func AuthButton(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.custom("Comfortaa", size: 20))
+                .font(.system(size: 20))
                 .fontWeight(.bold)
-                .foregroundColor(isSelected ? Color("DarkBlue") : Color("LightColor"))
+                .foregroundColor(isSelected ? AppTheme.darkBlueColor : AppTheme.lightColor)
                 .padding(.horizontal, 25)
                 .padding(.vertical, 10)
-                .background(isSelected ? Color("LightColor") : Color.clear)
+                .background(isSelected ? AppTheme.lightColor : Color.clear)
                 .cornerRadius(15)
         }
     }
 
     var loginView: some View {
         VStack {
-            authTextField("Email", text: $viewModel.email)
+            authTextField(Localization.email, text: $viewModel.email)
             passwordField(text: $viewModel.password, isVisible: $isPasswordVisible)
             forgotPasswordButton
-            actionButton("Login") { print("Giriş Yap") }
+            actionButton(Localization.Login) { print("Login button pressed") }
         }
     }
 
     var registerFirstView: some View {
         VStack {
-            authTextField("Name", text: $viewModel.name)
-            authTextField("Surname", text: $viewModel.surname)
-            authTextField("School ID", text: $viewModel.schoolId)
-            actionButton("Next") { withAnimation { viewModel.isLogin = 2 } }
+            authTextField(Localization.name, text: $viewModel.name)
+            authTextField(Localization.surname, text: $viewModel.surname)
+            authTextField(Localization.schoolid, text: $viewModel.schoolId)
+            actionButton(Localization.next) { withAnimation { viewModel.isLogin = 2 } }
         }
     }
 
     var registerSecondView: some View {
         VStack {
-            authTextField("Personal Email", text: $viewModel.email)
+            authTextField(Localization.personalEmail, text: $viewModel.email)
             passwordField(text: $viewModel.password, isVisible: $isPasswordVisible)
-            passwordField(text: $viewModel.confirmPassword, isVisible: $isSecondPasswordVisible, placeholder: "Confirm Password")
-            actionButton("Register") { print("Kayıt olundu") }
+            passwordField(text: $viewModel.confirmPassword, isVisible: $isSecondPasswordVisible, placeholder: Localization.confirmPassword)
+            actionButton(Localization.Register) { print("Register button pressed") }
         }
     }
 
     var forgotPasswordView: some View {
         VStack {
-            authTextField("Email", text: $viewModel.email)
-            actionButton("Send") { print("Şifre sıfırlama maili gönderildi") }
+            authTextField(Localization.email, text: $viewModel.email)
+            actionButton(Localization.send) { print("Şifre sıfırlama maili gönderildi") }
         }
     }
 
@@ -138,12 +137,12 @@ struct AuthView: View {
             .foregroundStyle(.black)
             .padding()
             .background(RoundedRectangle(cornerRadius: 17.0)
-                .stroke(Color("DarkBlue"), lineWidth: 2))
+                .stroke(AppTheme.darkBlueColor, lineWidth: 2))
             .frame(width: 320, height: 50)
             .padding(.bottom, 10)
     }
 
-    func passwordField(text: Binding<String>, isVisible: Binding<Bool>, placeholder: String = "Password") -> some View {
+    func passwordField(text: Binding<String>, isVisible: Binding<Bool>, placeholder: String = Localization.password) -> some View {
         HStack {
             if isVisible.wrappedValue {
                 TextField(placeholder, text: text)
@@ -162,7 +161,7 @@ struct AuthView: View {
         .padding()
         .frame(width: 320, height: 50)
         .background(RoundedRectangle(cornerRadius: 17.0)
-            .stroke(Color("DarkBlue"), lineWidth: 2))
+            .stroke(AppTheme.darkBlueColor, lineWidth: 2))
         .padding(.bottom, 10)
     }
 
@@ -174,8 +173,8 @@ struct AuthView: View {
                     viewModel.isLogin = 3
                 }
             } label: {
-                Text("Forgot Password")
-                    .font(.custom("Comfortaa", size: 12))
+                Text(Localization.forgotPassword)
+                    .font(.system(size: 12))
                     .fontWeight(.bold)
                     .foregroundColor(Color.gray)
             }
@@ -206,19 +205,17 @@ struct AuthView: View {
                 }
             } else if viewModel.isLogin == 3 {
                 viewModel.forgotPassword()
-                
-
             } else {
-                alertService.showString(title: "Error", message: "Unknown error occurrer.\nCode: 0x0001")
+                alertService.showString(title: Localization.error, message: Localization.unknownError + "0x0001")
             }
 
         } label: {
             Text(title)
-                .font(.custom("Comfortaa", size: 20))
+                .font(.system(size: 20))
                 .fontWeight(.bold)
-                .foregroundColor(Color("LightColor"))
+                .foregroundColor(AppTheme.lightColor)
                 .frame(width: 320, height: 60)
-                .background(Color("DarkBlue"))
+                .background(AppTheme.darkBlueColor)
                 .cornerRadius(15)
         }
         .frame(width: 320, height: 50)
@@ -227,12 +224,12 @@ struct AuthView: View {
 
     var socialAuthButtonsView: some View {
         HStack(spacing: 10) {
-            SocialButton(name: "Instagram") { print("Google ile giriş yap") }
-            SocialButton(name: "Linkedin") { print("Apple ile giriş yap") }
-            SocialButton(name: "Logo") { print("Apple ile giriş yap") }
+            SocialButton(name: AppTheme.instagramLogo) { print("Instagram button pressed") }
+            SocialButton(name: AppTheme.linkedinLogo) { print("Linkedin button pressed") }
+            SocialButton(name: AppTheme.Logo) { print("KTUN Ai Lab button pressed") }
         }
         .frame(width: 350, height: 70)
-        .background(Color("LightColor"))
+        .background(AppTheme.lightColor)
         .cornerRadius(20)
         .padding(.top)
     }
@@ -240,12 +237,12 @@ struct AuthView: View {
     func SocialButton(name: String, action: @escaping () -> Void) -> some View {
         Button{
             switch name{
-                case "Instagram":
-                UIApplication.shared.open(URL(string: "https://www.instagram.com/ktunailab/")!)
+            case AppTheme.instagramLogo:
+                UIApplication.shared.open(Constants.instagramURL)
                 case "Linkedin":
-                UIApplication.shared.open(URL(string: "https://www.linkedin.com/company/ktun-ai-lab/")!)
+                UIApplication.shared.open(Constants.linkedinURL)
                 case "Logo":
-                UIApplication.shared.open(URL(string: "https://ktunailab.com/")!)
+                UIApplication.shared.open(Constants.ktunAiLabURL)
                 default:
                     print("Social Button Error: \(name) is not a valid social provide")
             }
@@ -255,7 +252,7 @@ struct AuthView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 37, height: 37)
                 .frame(width: 105, height: 55)
-                .background(Color("DarkBlue"))
+                .background(AppTheme.darkBlueColor)
                 .cornerRadius(15)
         }
     }

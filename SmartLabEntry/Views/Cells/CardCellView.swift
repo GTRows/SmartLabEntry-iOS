@@ -32,7 +32,7 @@ struct CardCellView: View {
 
     private var cardBackground: some View {
         Rectangle()
-            .fill(Color("LightColor"))
+            .fill(AppTheme.lightColor)
             .frame(width: 350, height: 200)
             .cornerRadius(20)
     }
@@ -77,7 +77,7 @@ struct CardCellView: View {
         }) {
             Image(systemName: "lock.rotation")
                 .resizable()
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(AppTheme.darkBlueColor)
                 .scaleEffect(x: -1, y: 1)
                 .frame(width: 20, height: 20)
                 .padding(.trailing, 45)
@@ -96,7 +96,7 @@ struct CardCellView: View {
     private var status: some View {
         HStack {
             statusIndicator
-            Text(accessPortal.isOpen ? "Open" : "Close")
+            Text(accessPortal.isOpen ? Localization.open : Localization.close)
                 .foregroundColor(accessPortal.isOpen ? .green : .red)
                 .customStyle()
             Spacer()
@@ -106,7 +106,7 @@ struct CardCellView: View {
     private var capacity: some View {
         HStack {
             Image(systemName: "person.fill")
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(AppTheme.darkBlueColor)
                 .padding(.leading, 20)
             Text("\(accessPortal.currentUsersId.count) / \(accessPortal.maxCapacity)")
                 .customStyle()
@@ -123,7 +123,7 @@ struct CardCellView: View {
 
     private var sessionButton: some View {
         Button(action: buttonPressed) {
-            Text(isUserInSession ? "Exit" : "Enter")
+            Text(isUserInSession ? Localization.exit : Localization.enter)
                 .sessionButtonStyle(isInSession: isUserInSession)
         }
     }
@@ -134,8 +134,8 @@ struct CardCellView: View {
 }
 
 extension Text {
-    func customStyle(size: Int = 15, color: Color = Color("DarkBlue"), fontWeight: Font.Weight = .medium) -> some View {
-        font(.custom("Comfortaa", size: CGFloat(size)))
+    func customStyle(size: Int = 15, color: Color = AppTheme.darkBlueColor, fontWeight: Font.Weight = .medium) -> some View {
+        font(.system(size: CGFloat(size)))
             .fontWeight(fontWeight)
             .foregroundColor(color)
             .multilineTextAlignment(.leading)
@@ -144,7 +144,7 @@ extension Text {
 
 extension Text {
     func sessionButtonStyle(isInSession: Bool) -> some View {
-        font(.custom("Comfortaa", size: 20))
+        font(.system(size: 20))
             .fontWeight(.bold)
             .foregroundColor(Color.white)
             .frame(width: 150, height: 35)

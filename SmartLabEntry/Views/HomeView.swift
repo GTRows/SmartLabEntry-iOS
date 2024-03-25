@@ -33,8 +33,7 @@ struct HomeView: View {
                     Spacer()
                 }
                 .background(
-                    LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
-                        .edgesIgnoringSafeArea(.all)
+                    AppTheme.backgroundGradientView
                 )
                 .alert(isPresented: $alertService.isPresenting) {
                     alertService.alert
@@ -81,14 +80,14 @@ struct HomeView: View {
     var currentView: some View {
         ZStack {
             Rectangle()
-                .fill(Color("LightColor"))
+                .fill(AppTheme.lightColor)
                 .frame(width: 350)
                 .cornerRadius(20)
             VStack {
-                Text("\(viewModel.accessPortalList[viewModel.currentPage.index].name)\nOccupants in the room")
+                Text("\(viewModel.accessPortalList[viewModel.currentPage.index].name)\n" + Localization.occupantsInLab)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("DarkBlue"))
+                    .foregroundColor(AppTheme.darkBlueColor)
                     .multilineTextAlignment(.center)
                     .padding()
 
@@ -107,7 +106,7 @@ struct HomeView: View {
                     Image(systemName: isShowMoreUsers ? "chevron.up" : "chevron.down")
                         .resizable()
                         .frame(width: 30, height: 20)
-                        .foregroundColor(Color("DarkBlue"))
+                        .foregroundColor(AppTheme.darkBlueColor)
                 }
             }
         }
@@ -123,8 +122,8 @@ struct HomeView: View {
             ForEach(filteredUsers, id: \.element.userId) { index, user in
                 HStack {
                     Text("\(index + 1) - \(user.userName)")
-                        .font(.custom("Comfortaa", size: 20))
-                        .foregroundColor(Color("DarkBlue"))
+                        .font(.system(size: 20))
+                        .foregroundColor(AppTheme.darkBlueColor)
                         .multilineTextAlignment(.center)
                         .lineLimit(1)
                         .padding(.horizontal)
@@ -133,16 +132,16 @@ struct HomeView: View {
                     SwipeView {
                         Spacer()
                         Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
-                            .font(.custom("Comfortaa", size: 20))
+                            .font(.system(size: 20))
                             .fontWeight(.medium)
-                            .foregroundColor(Color("DarkBlue"))
+                            .foregroundColor(AppTheme.darkBlueColor)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                             .cornerRadius(20)
                     } trailingActions: { _ in
                         Button {
-                            alertService.showString(title: "Remove user", message: "Remove user button pressed")
-                            print("Remove user")
+                            alertService.showString(title: Localization.removeUser, message: Localization.removeUserQuestion)
+                            print("Remove user pressed")
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .resizable()
@@ -154,7 +153,7 @@ struct HomeView: View {
 
                 if (viewModel.currentUsersTemp.last?.userId != user.userId && isShowMoreUsers) || (index + 1 != maxMinimalUsers && !isShowMoreUsers) {
                     Rectangle()
-                        .fill(Color("DarkBlue"))
+                        .fill(AppTheme.darkBlueColor)
                         .frame(width: 300, height: 1)
                 }
             }
@@ -174,23 +173,23 @@ struct HomeView: View {
             Image(systemName: "person.fill")
                 .resizable()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Color("LightColor"))
+                .foregroundColor(AppTheme.lightColor)
         }
     }
 
     var headerView: some View {
         HStack {
             VStack {
-                Text("Hi, \(viewModel.name)!")
+                Text(Localization.hi + ", \(viewModel.name)" + "!")
                     .font(.custom("Comfortaa", size: 35))
                     .fontWeight(.bold)
-                    .foregroundColor(Color("LightColor"))
+                    .foregroundColor(AppTheme.lightColor)
                     .multilineTextAlignment(.leading)
                     .frame(width: 250, alignment: .leading)
-                Text("Welcome to AI Lab!")
+                Text(Localization.welcome)
                     .font(.custom("Comfortaa", size: 15))
                     .fontWeight(.medium)
-                    .foregroundColor(Color("LightColor"))
+                    .foregroundColor(AppTheme.lightColor)
                     .multilineTextAlignment(.leading)
                     .frame(width: 250, alignment: .leading)
             }

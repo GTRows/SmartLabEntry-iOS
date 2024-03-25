@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct tempView: View {
-    var body: some View {
-        Text("Hello")
-    }
-}
-
 struct SettingsPopUpView: View {
     @Binding var isShowing: Bool
 
@@ -22,14 +16,13 @@ struct SettingsPopUpView: View {
                 VStack(spacing: 0) {
                     Spacer()
                     TopView
-                    selectView(destination: AdminMenuView(), label: "Go to Page One")
+                    selectView(destination: AdminMenuView(), label: Localization.settings)
                     DividerBetweenButtons
-                    selectView(destination: tempView(), label: "Go to Page 2")
+                    selectView(destination: AdminMenuView(), label: Localization.adminPanel)
                     DividerBetweenButtons
-                    selectView(destination: tempView(), label: "Go to Page 3")
+                    selectView(destination: AdminMenuView(), label: Localization.FeedBack)
                     DividerBetweenButtons
-                    selectView(destination: tempView(), label: "Go to Page 4")
-
+                    selectView(destination: AdminMenuView(), label: Localization.logOut)
                     BottomVoidView
                 }
                 .ignoresSafeArea()
@@ -38,25 +31,22 @@ struct SettingsPopUpView: View {
         }
     }
 
-    var topRectangleColor: Color = Color(#colorLiteral(red: 0.7411764860153198, green: 0.7490196228027344, blue: 0.7843137383460999, alpha: 1))
-    var topRectangleDividerColor: Color = Color(#colorLiteral(red: 0.47843137383461, green: 0.5058823823928833, blue: 0.6274510025978088, alpha: 1))
-
     var TopView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .foregroundColor(topRectangleColor)
+                .foregroundColor(AppTheme.coolGreyColor)
             Rectangle()
-                .foregroundColor(topRectangleColor)
+                .foregroundColor(AppTheme.slateGreyColor)
                 .padding(.top, 25)
             VStack {
                 Rectangle()
                     .frame(width: 100, height: 5)
-                    .foregroundColor(topRectangleDividerColor)
+                    .foregroundColor(AppTheme.slateGreyColor)
                     .cornerRadius(5)
                     .padding(.top, 10)
-                Text("Name Surname")
-                    .font(.custom("Quicksand SemiBold", size: 32))
-                    .foregroundColor(Color("DarkBlue"))
+                Text("Name Surname Dinamik")
+                    .font(.system(size: 32))
+                    .foregroundColor(AppTheme.darkBlueColor)
                     .multilineTextAlignment(.center)
                 Spacer()
             }
@@ -67,7 +57,7 @@ struct SettingsPopUpView: View {
     func selectView<Destination: View>(destination: Destination, label: String) -> some View {
         ZStack {
             Rectangle()
-                .foregroundColor(Color("LightColor"))
+                .foregroundColor(AppTheme.lightColor)
             VStack {
                 NavigationLink(destination: destination) {
                     CustomButtonView(label: label, icon: "person.fill")
@@ -80,7 +70,7 @@ struct SettingsPopUpView: View {
     var DividerBetweenButtons: some View {
         ZStack {
             Rectangle()
-                .foregroundColor(Color("LightColor"))
+                .foregroundColor(AppTheme.lightColor)
             Rectangle()
                 .frame(height: 2)
                 .foregroundColor(Color(.gray))
@@ -93,11 +83,11 @@ struct SettingsPopUpView: View {
             Image(systemName: icon)
                 .resizable()
                 .frame(width: 30, height: 30)
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(AppTheme.darkBlueColor)
                 .padding(.vertical, 20)
             Text(label)
-                .font(.custom("Quicksand SemiBold", size: 20))
-                .foregroundColor(Color("DarkBlue"))
+                .font(.system(size: 20))
+                .foregroundColor(AppTheme.darkBlueColor)
                 .padding(.horizontal, 25)
         }
     }
@@ -105,7 +95,7 @@ struct SettingsPopUpView: View {
     var BottomVoidView: some View {
         Rectangle()
             .frame(height: 50)
-            .foregroundColor(Color("LightColor"))
+            .foregroundColor(AppTheme.lightColor)
     }
 }
 

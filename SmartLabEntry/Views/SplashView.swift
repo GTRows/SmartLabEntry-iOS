@@ -16,27 +16,26 @@ struct SplashView: View {
             VStack {
                 Spacer()
                 Divider()
-                Image("Logo")
+                Image(AppTheme.Logo)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 200, height: 200)
                     .padding(.bottom, 20)
 
-                Text("Yapay Zeka ve\nVeri Bilimi  Laboratuvarı")
+                Text(Localization.splahTitle)
                     .font(.custom("Comfortaa", size: 25))
                     .fontWeight(.bold)
-                    .foregroundColor(Color("LightColor"))
+                    .foregroundColor(AppTheme.lightColor)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 20)
 
                 Spacer()
             }
             .background(
-                LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
-                    .edgesIgnoringSafeArea(.all)
+                AppTheme.backgroundGradientView
             )
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + AppTheme.splashScreenDuration) {
                     withAnimation {
                         isActive = true
                     }
