@@ -7,26 +7,63 @@
 
 import SwiftUI
 
+enum ActiveSheet: Identifiable {
+    case Door
+    case AccessPortal
+    case none
+
+    var id: Int {
+        hashValue
+    }
+}
+
 struct AdminMenuView: View {
+    @State public var activeSheet: ActiveSheet = .none
+
     var body: some View {
-        VStack(spacing: 0) {
-            AdminMenuButton(.top, destination: AnyView(EmptyView()), title: Localization.doorOpenClose)
-            DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.accessPortalOpenClose)
-            DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.rfidCardIdentification)
-            DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.membershipConfirmation)
-            DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.laboratoryActivation)
-            DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.feedbackControl)
-            DividerBetweenButtons
-            AdminMenuButton(.bottom, destination: AnyView(EmptyView()), title: Localization.memberManagement)
-            Spacer()
+        ZStack {
+            VStack(spacing: 0) {
+                AdminMenuButton(.top, destination: AnyView(EmptyView()), title: Localization.doorOpenClose).onTapGesture {
+                    withAnimation(.easeInOut) {
+                        self.activeSheet = .Door
+                    }
+                }
+                DividerBetweenButtons
+                AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.accessPortalOpenClose).onTapGesture {
+                    withAnimation(.easeInOut) {
+                        self.activeSheet = .AccessPortal
+                    }
+                }
+                DividerBetweenButtons
+                AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.rfidCardIdentification)
+                DividerBetweenButtons
+                AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.membershipConfirmation)
+                DividerBetweenButtons
+                AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.laboratoryActivation)
+                DividerBetweenButtons
+                AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.feedbackControl)
+                DividerBetweenButtons
+                AdminMenuButton(.bottom, destination: AnyView(EmptyView()), title: Localization.memberManagement)
+                Spacer()
+            }
+            .padding(.top)
+            .background(AppTheme.backgroundGradient.edgesIgnoringSafeArea(.all))
+            if activeSheet != .none {
+                Color.black
+                    .opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            activeSheet = .none
+                        }
+                    }
+                withAnimation(.easeInOut) {
+                    OpenCloseView(openCloseState: activeSheet)
+                        .transition(.opacity)
+                        .edgesIgnoringSafeArea(.all)
+                }
+            }
         }
-        .padding(.top)
-        .background(AppTheme.backgroundGradient.edgesIgnoringSafeArea(.all))
     }
 
     var DividerBetweenButtons: some View {

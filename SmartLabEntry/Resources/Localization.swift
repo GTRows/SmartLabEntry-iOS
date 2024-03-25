@@ -45,4 +45,6 @@ enum Localization {
     static let removeUserQuestion = "Are you sure you want to remove the user?"
     static let welcome = "Welcome to AI Lab!"
     static let hi = "Hi, "
+    static let selectDoor = "Please Select a Door to Open"
+    static let selectPortal = "Please Select a Portal to Open"
 }

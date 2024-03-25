@@ -36,7 +36,7 @@ struct SettingsPopUpView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .foregroundColor(AppTheme.coolGreyColor)
             Rectangle()
-                .foregroundColor(AppTheme.slateGreyColor)
+                .foregroundColor(AppTheme.coolGreyColor)
                 .padding(.top, 25)
             VStack {
                 Rectangle()
