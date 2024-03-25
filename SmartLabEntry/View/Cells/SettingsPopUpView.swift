@@ -7,20 +7,35 @@
 
 import SwiftUI
 
-struct SettingsPopUpView: View {
+struct tempView: View {
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            TopView
-            SelectView
-            DividerBetweenButtons
-            SelectView
-            DividerBetweenButtons
-            SelectView
-            DividerBetweenButtons
-            SelectView
-            BottomVoidView
-        }.ignoresSafeArea()
+        Text("Hello")
+    }
+}
+
+struct SettingsPopUpView: View {
+    @Binding var isShowing: Bool
+
+    var body: some View {
+        ZStack {
+            if isShowing {
+                VStack(spacing: 0) {
+                    Spacer()
+                    TopView
+                    selectView(destination: tempView(), label: "Go to Page One")
+                    DividerBetweenButtons
+                    selectView(destination: tempView(), label: "Go to Page 2")
+                    DividerBetweenButtons
+                    selectView(destination: tempView(), label: "Go to Page 3")
+                    DividerBetweenButtons
+                    selectView(destination: tempView(), label: "Go to Page 4")
+
+                    BottomVoidView
+                }
+                .ignoresSafeArea()
+                .transition(.move(edge: .bottom))
+            }
+        }
     }
 
     var topRectangleColor: Color = Color(#colorLiteral(red: 0.7411764860153198, green: 0.7490196228027344, blue: 0.7843137383460999, alpha: 1))
@@ -39,7 +54,6 @@ struct SettingsPopUpView: View {
                     .foregroundColor(topRectangleDividerColor)
                     .cornerRadius(5)
                     .padding(.top, 10)
-                // Name Surname
                 Text("Name Surname")
                     .font(.custom("Quicksand SemiBold", size: 32))
                     .foregroundColor(Color("DarkBlue"))
@@ -50,18 +64,17 @@ struct SettingsPopUpView: View {
         .frame(height: 100)
     }
 
-    var SelectView: some View {
+    func selectView<Destination: View>(destination: Destination, label: String) -> some View {
         ZStack {
             Rectangle()
                 .foregroundColor(Color("LightColor"))
             VStack {
-                Button(action: {
-                    print("Button pressed")
-                }) {
-                    CustomButtonView
+                NavigationLink(destination: destination) {
+                    CustomButtonView(label: label, icon: "person.fill")
                 }
             }
-        }.frame(height: 50)
+        }
+        .frame(height: 50)
     }
 
     var DividerBetweenButtons: some View {
@@ -75,14 +88,14 @@ struct SettingsPopUpView: View {
         }.frame(height: 20)
     }
 
-    var CustomButtonView: some View {
+    func CustomButtonView(label: String, icon: String) -> some View {
         HStack {
-            Image(systemName: "person.fill")
+            Image(systemName: icon)
                 .resizable()
                 .frame(width: 30, height: 30)
                 .foregroundColor(Color("DarkBlue"))
                 .padding(.vertical, 20)
-            Text("Occupants in the room")
+            Text(label)
                 .font(.custom("Quicksand SemiBold", size: 20))
                 .foregroundColor(Color("DarkBlue"))
                 .padding(.horizontal, 25)
@@ -97,5 +110,7 @@ struct SettingsPopUpView: View {
 }
 
 #Preview {
-    SettingsPopUpView()
+    SettingsPopUpView(isShowing: .constant(true))
+        .previewLayout(.sizeThatFits)
+        .padding()
 }

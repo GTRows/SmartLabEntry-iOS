@@ -13,26 +13,49 @@ struct HomeView: View {
     @StateObject var alertService = AlertService.shared
     @ObservedObject private var viewModel = HomeViewModel()
     @State var currentPage: Page = .first()
+    @State var isSettingsPresented: Bool = false
+    @State var isShowMoreUsers: Bool = false
+    let maxMinimalUsers: Int = 5
 
     var body: some View {
-        VStack {
-            Divider()
-            HStack {
-                headerView
-                Spacer()
-                settingsButtonView
-                    .padding(.trailing, 30)
+        NavigationView {
+            ZStack {
+                VStack {
+                    Divider()
+                    HStack {
+                        headerView
+                        Spacer()
+                        settingsButtonView
+                            .padding(.trailing, 30)
+                    }
+                    cardsView
+                    currentView
+                    Spacer()
+                }
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
+                        .edgesIgnoringSafeArea(.all)
+                )
+                .alert(isPresented: $alertService.isPresenting) {
+                    alertService.alert
+                }
+                if isSettingsPresented {
+                    Color.black
+                        .opacity(0.3)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.easeInOut) {
+                                isSettingsPresented = false
+                            }
+                        }
+                }
+                withAnimation(.easeInOut) {
+                    SettingsPopUpView(isShowing: $isSettingsPresented)
+                        .transition(.move(edge: .bottom))
+                        .edgesIgnoringSafeArea(.all)
+                }
             }
-            cardsView
-            currentView
-            Spacer()
-        }
-        .background(
-            LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
-        )
-        .alert(isPresented: $alertService.isPresenting) {
-            alertService.alert
+            .navigationBarHidden(true)
         }
     }
 
@@ -69,7 +92,36 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                     .padding()
 
-                ForEach(Array(viewModel.currentUsersTemp.enumerated()), id: \.element.userId) { index, user in HStack {
+                if isShowMoreUsers {
+                    ScrollView {
+                        currentUsersView
+                    }
+                } else {
+                    currentUsersView
+                }
+
+                Spacer()
+                Button {
+                    isShowMoreUsers.toggle()
+                } label: {
+                    Image(systemName: isShowMoreUsers ? "chevron.up" : "chevron.down")
+                        .resizable()
+                        .frame(width: 30, height: 20)
+                        .foregroundColor(Color("DarkBlue"))
+                }
+            }
+        }
+    }
+
+    var filteredUsers: [(offset: Int, element: CurrentUserModel)] {
+        let enumeratedUsers = Array(viewModel.currentUsersTemp.enumerated())
+        return isShowMoreUsers ? enumeratedUsers : Array(enumeratedUsers.prefix(5))
+    }
+
+    var currentUsersView: some View {
+        VStack {
+            ForEach(filteredUsers, id: \.element.userId) { index, user in
+                HStack {
                     Text("\(index + 1) - \(user.userName)")
                         .font(.custom("Comfortaa", size: 20))
                         .foregroundColor(Color("DarkBlue"))
@@ -99,13 +151,12 @@ struct HomeView: View {
                         }
                     }.padding(.horizontal, 35)
                 }
-                if viewModel.currentUsersTemp.last?.userId != user.userId {
+
+                if (viewModel.currentUsersTemp.last?.userId != user.userId && isShowMoreUsers) || (index + 1 != maxMinimalUsers && !isShowMoreUsers) {
                     Rectangle()
                         .fill(Color("DarkBlue"))
                         .frame(width: 300, height: 1)
                 }
-                }
-                Spacer()
             }
         }
     }
@@ -113,9 +164,12 @@ struct HomeView: View {
     var settingsButtonView: some View {
         // logout button
         Button(action: {
-            alertService.showString(title: "Logout", message: "Logout button pressded")
-            print("Logout")
-            UserSessionService.shared.signOut()
+            withAnimation {
+                isSettingsPresented = true
+            }
+//            alertService.showString(title: "Logout", message: "Logout button pressded")
+//            print("Logout")
+//            UserSessionService.shared.signOut()
         }) {
             Image(systemName: "person.fill")
                 .resizable()
