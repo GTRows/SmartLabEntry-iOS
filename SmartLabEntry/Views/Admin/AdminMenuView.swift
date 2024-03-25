@@ -10,33 +10,30 @@ import SwiftUI
 struct AdminMenuView: View {
     var body: some View {
         VStack(spacing: 0) {
-            AdminMenuButton(.top, destination: AnyView(EmptyView()), title: "Door Open/Close")
+            AdminMenuButton(.top, destination: AnyView(EmptyView()), title: Localization.doorOpenClose)
             DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: "Access Portal Open/Close")
+            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.accessPortalOpenClose)
             DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: "RFID Card Identification")
+            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.rfidCardIdentification)
             DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: "Membership Confirmation")
+            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.membershipConfirmation)
             DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: "Laboratory Activation")
+            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.laboratoryActivation)
             DividerBetweenButtons
-            AdminMenuButton(destination: AnyView(EmptyView()), title: "Feedback Control")
+            AdminMenuButton(destination: AnyView(EmptyView()), title: Localization.feedbackControl)
             DividerBetweenButtons
-            AdminMenuButton(.bottom, destination: AnyView(EmptyView()), title: "Member Management")
+            AdminMenuButton(.bottom, destination: AnyView(EmptyView()), title: Localization.memberManagement)
             Spacer()
         }
         .padding(.top)
-        .background(
-            LinearGradient(gradient: Gradient(colors: [Color("Blue"), Color("DarkBlue")]), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
-        )
+        .background(AppTheme.backgroundGradient.edgesIgnoringSafeArea(.all))
     }
 
     var DividerBetweenButtons: some View {
         Rectangle()
             .frame(height: 2)
             .padding(.horizontal, 20)
-            .foregroundColor(Color("Grey"))
+            .foregroundColor(AppTheme.greyColor)
     }
 }
 
@@ -63,7 +60,7 @@ struct AdminMenuButton: View {
                 HStack {
                     Text(self.title)
                         .font(.system(size: 20))
-                        .foregroundColor(Color("DarkBlue"))
+                        .foregroundColor(AppTheme.darkBlueColor)
                     Spacer()
                 }
                 .padding(.vertical, 12)
@@ -71,7 +68,7 @@ struct AdminMenuButton: View {
                 .cornerRadius(10)
             }.padding()
                 .frame(maxWidth: .infinity)
-                .background(Color("LigthGrey"))
+                .background(AppTheme.lightGreyColor)
                 .clipShape(
                     .rect(
                         topLeadingRadius: location == .top ? 20 : 0,
