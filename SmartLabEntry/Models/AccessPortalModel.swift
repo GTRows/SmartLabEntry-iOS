@@ -8,9 +8,27 @@
 import Foundation
 
 struct AccessPortalModel: Codable, Equatable, Hashable {
+    var id: String
     var name: String
-    var isOpen: Bool
+    var open: Bool
     var maxCapacity: Int
-    var currentUsersId: [String]
-    var logoName: String // TODO: change to logoUrl
+    var currentUsers: [CurrentUserModel]
+    var avatar: String
+
+    static func == (lhs: AccessPortalModel, rhs: AccessPortalModel) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.open == rhs.open &&
+            lhs.maxCapacity == rhs.maxCapacity &&
+            lhs.currentUsers == rhs.currentUsers &&
+            lhs.avatar == rhs.avatar
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(open)
+        hasher.combine(maxCapacity)
+        hasher.combine(avatar)
+    }
 }

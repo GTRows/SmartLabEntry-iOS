@@ -8,7 +8,7 @@
 import Foundation
 
 struct ApiPath {
-    static let baseUrl = "https://lab.alperen.keenetic.link/api"
+    static let baseUrl = "http://192.168.18.42:8080/api"
 
     // Auth API
     static let registerApi = "/auth/register"

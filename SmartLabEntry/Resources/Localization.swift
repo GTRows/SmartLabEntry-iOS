@@ -15,6 +15,7 @@ enum Localization {
     static let laboratoryActivation = "Laboratory Activation"
     static let feedbackControl = "Feedback Control"
     static let memberManagement = "Member Management"
+    static let noAccessPortal = "No Access Portal"
     static let open = "Open"
     static let close = "Close"
     static let exit = "Exit"

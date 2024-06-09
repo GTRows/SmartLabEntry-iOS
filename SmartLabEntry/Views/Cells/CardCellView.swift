@@ -53,7 +53,7 @@ struct CardCellView: View {
     }
 
     private var logoImage: some View {
-        Image(accessPortal.logoName)
+        Image(accessPortal.avatar)
             .resizable()
             .frame(width: 75, height: 75)
             .padding(.leading, 40)
@@ -96,8 +96,8 @@ struct CardCellView: View {
     private var status: some View {
         HStack {
             statusIndicator
-            Text(accessPortal.isOpen ? Localization.open : Localization.close)
-                .foregroundColor(accessPortal.isOpen ? .green : .red)
+            Text(accessPortal.open ? Localization.open : Localization.close)
+                .foregroundColor(accessPortal.open ? .green : .red)
                 .customStyle()
             Spacer()
         }.padding(.bottom, 5)
@@ -108,7 +108,7 @@ struct CardCellView: View {
             Image(systemName: "person.fill")
                 .foregroundColor(AppTheme.darkBlueColor)
                 .padding(.leading, 20)
-            Text("\(accessPortal.currentUsersId.count) / \(accessPortal.maxCapacity)")
+            Text("\(accessPortal.currentUsers.count) / \(accessPortal.maxCapacity)")
                 .customStyle()
             Spacer()
         }.padding(.bottom, 5)
@@ -116,7 +116,7 @@ struct CardCellView: View {
 
     private var statusIndicator: some View {
         Circle()
-            .fill(accessPortal.isOpen ? Color.green : Color.red)
+            .fill(accessPortal.open ? Color.green : Color.red)
             .frame(width: 10, height: 10)
             .padding(.leading, 20)
     }
@@ -154,5 +154,5 @@ extension Text {
 }
 
 #Preview {
-    CardCellView(accessPortal: AccessPortalModel(name: "SmartLab", isOpen: true, maxCapacity: 30, currentUsersId: ["asd", "123", "1233"], logoName: "Logo_2"))
+    CardCellView(accessPortal: AccessPortalModel(id:"123",name: "SmartLab", open: true, maxCapacity: 30, currentUsers: [], avatar: "Logo_2"))
 }

@@ -12,7 +12,6 @@ import SwipeActions
 struct HomeView: View {
     @StateObject var alertService = AlertService.shared
     @ObservedObject private var viewModel = HomeViewModel()
-    @State var currentPage: Page = .first()
     @State var isSettingsPresented: Bool = false
     @State var isShowMoreUsers: Bool = false
     let maxMinimalUsers: Int = 5
@@ -22,14 +21,28 @@ struct HomeView: View {
             ZStack {
                 VStack {
                     Divider()
+                    Button {
+                        viewModel.getAccessPortalList()
+                    } label: {
+                        Text("test")
+                            .padding(.all, 10)
+                            .background(.red)
+                            .cornerRadius(10)
+                    }
                     HStack {
                         headerView
                         Spacer()
                         settingsButtonView
                             .padding(.trailing, 30)
                     }
-                    cardsView
-                    currentView
+                    if viewModel.accessPortalList.isEmpty {
+                        Text(Localization.noAccessPortal)
+                            .font(.title)
+                            .foregroundColor(AppTheme.lightColor)
+                    } else {
+                        cardsView
+                        currentView
+                    }
                     Spacer()
                 }
                 .background(
@@ -61,7 +74,7 @@ struct HomeView: View {
     var cardsView: some View {
         VStack {
             Pager(
-                page: currentPage,
+                page: viewModel.currentPage,
                 data: viewModel.accessPortalList,
                 id: \.self
             ) { item in
@@ -69,7 +82,7 @@ struct HomeView: View {
             }
             .singlePagination(ratio: 0.5, sensitivity: .low)
             .onPageWillChange({ page in
-                print("Page will change to \(page)")
+                viewModel.cardChanged(index: page)
             })
             .pagingPriority(.simultaneous)
             .itemSpacing(1)
@@ -84,7 +97,7 @@ struct HomeView: View {
                 .frame(width: 350)
                 .cornerRadius(20)
             VStack {
-                Text("\(viewModel.accessPortalList[viewModel.currentPage.index].name)\n" + Localization.occupantsInLab)
+                Text("\(viewModel.accessPortalName)\n" + Localization.occupantsInLab)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(AppTheme.darkBlueColor)
@@ -113,7 +126,7 @@ struct HomeView: View {
     }
 
     var filteredUsers: [(offset: Int, element: CurrentUserModel)] {
-        let enumeratedUsers = Array(viewModel.currentUsersTemp.enumerated())
+        let enumeratedUsers = Array(viewModel.currentUsers.enumerated())
         return isShowMoreUsers ? enumeratedUsers : Array(enumeratedUsers.prefix(5))
     }
 
@@ -124,14 +137,13 @@ struct HomeView: View {
                     Text("\(index + 1) - \(user.userName)")
                         .font(.system(size: 20))
                         .foregroundColor(AppTheme.darkBlueColor)
-                        .multilineTextAlignment(.center)
                         .lineLimit(1)
-                        .padding(.horizontal)
-                        .cornerRadius(20)
-                        .padding(.horizontal, 35)
+                        .padding(.leading, 45)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: 250, alignment: .leading)
                     SwipeView {
                         Spacer()
-                        Text("\(user.userEnteredTime, formatter: DateFormatter.timeOnly)")
+                        Text("\(user.userEnterTime, formatter: DateFormatter.timeOnly)")
                             .font(.system(size: 20))
                             .fontWeight(.medium)
                             .foregroundColor(AppTheme.darkBlueColor)
@@ -148,10 +160,10 @@ struct HomeView: View {
                                 .frame(width: 40, height: 40)
                                 .foregroundColor(Color.red)
                         }
-                    }.padding(.horizontal, 35)
+                    }.padding(.trailing, 35)
                 }
 
-                if (viewModel.currentUsersTemp.last?.userId != user.userId && isShowMoreUsers) || (index + 1 != maxMinimalUsers && !isShowMoreUsers) {
+                if (viewModel.currentUsers.last?.userId != user.userId && isShowMoreUsers) || (index + 1 != maxMinimalUsers && !isShowMoreUsers) {
                     Rectangle()
                         .fill(AppTheme.darkBlueColor)
                         .frame(width: 300, height: 1)
@@ -180,7 +192,7 @@ struct HomeView: View {
     var headerView: some View {
         HStack {
             VStack {
-                Text(Localization.hi + ", \(viewModel.name)" + "!")
+                Text(Localization.hi + viewModel.name + "!")
                     .font(.custom("Comfortaa", size: 35))
                     .fontWeight(.bold)
                     .foregroundColor(AppTheme.lightColor)
@@ -197,6 +209,6 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

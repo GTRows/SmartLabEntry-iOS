@@ -15,7 +15,8 @@ struct AccessPortalService {
         }
     }
 
-    static func getAccessiblePortals(completion: @escaping (Result<[AccessPortalModel], Error>) -> Void) {
+    static func getAccessiblePortals(completion: @escaping (Result<[AccessPortalsAccessibleResponse], Error>) -> Void) {
+        // Do not use
         BaseService.sendRequest(to: ApiPath.getAccessiblePortals, method: .get, useToken: true) { result in
             BaseService.processResponse(result: result, completion: completion)
         }

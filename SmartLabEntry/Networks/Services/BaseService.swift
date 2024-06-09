@@ -49,6 +49,20 @@ struct BaseService {
             performRequestWithHeaders(actualHeaders)
         }
     }
+    
+    enum NetworkError: Error {
+        case errorMessages(statusCode: Int, message: String)
+        case invalidResponseData
+
+        var localizedDescription: String {
+            switch self {
+            case .errorMessages(let statusCode, let message):
+                return "Status Code: \(statusCode), Message: \(message)"
+            case .invalidResponseData:
+                return "Invalid response data"
+            }
+        }
+    }
 
     static func processResponse<T: Decodable>(
         result: Result<(statusCode: Int, responseString: String?), Error>,
@@ -57,15 +71,34 @@ struct BaseService {
         switch result {
         case .success(let (statusCode, responseString)):
             guard let responseString = responseString, let data = responseString.data(using: .utf8) else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response data"])))
+                completion(.failure(NetworkError.invalidResponseData))
                 return
             }
+            print("response: ")
+            print(responseString)
             if let statusCodeResult = handleResponseStatusCode(statusCode: statusCode, message: responseString), statusCodeResult {
                 do {
-                    let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                    let jsonData = responseString.data(using: .utf8)!
+                    let decodedResponse = try JSONDecoder().decode(T.self, from: jsonData)
                     completion(.success(decodedResponse))
+                } catch let DecodingError.dataCorrupted(context) {
+                    print("Data corrupted: \(context.debugDescription)")
+                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: "Data corrupted: \(context.debugDescription)")))
+                } catch let DecodingError.keyNotFound(key, context) {
+                    print("Key '\(key)' not found: \(context.debugDescription)")
+                    print("codingPath: \(context.codingPath)")
+                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: "Key '\(key)' not found: \(context.debugDescription)")))
+                } catch let DecodingError.valueNotFound(value, context) {
+                    print("Value '\(value)' not found: \(context.debugDescription)")
+                    print("codingPath: \(context.codingPath)")
+                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: "Value '\(value)' not found: \(context.debugDescription)")))
+                } catch let DecodingError.typeMismatch(type, context) {
+                    print("Type '\(type)' mismatch: \(context.debugDescription)")
+                    print("codingPath: \(context.codingPath)")
+                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: "Type '\(type)' mismatch: \(context.debugDescription)")))
                 } catch {
-                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: responseString)))
+                    print("Decoding error: \(error.localizedDescription)")
+                    completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: error.localizedDescription)))
                 }
             } else {
                 completion(.failure(NetworkError.errorMessages(statusCode: statusCode, message: responseString)))

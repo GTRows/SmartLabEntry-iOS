@@ -15,7 +15,7 @@ class AuthViewModel: ObservableObject {
     @Published var name: String = "aaTestRemoveMe"
     @Published var surname: String = "aaTestRemoveMePls"
     @Published var schoolId: String = "123123123"
-    @Published var email: String = "remove.fatih@gmail.com"
+    @Published var email: String = "admin@gmail.com"
     @Published var password: String = "1234.Five"
     @Published var confirmPassword: String = "1234.Five"
     @Published var isLogin = 0
