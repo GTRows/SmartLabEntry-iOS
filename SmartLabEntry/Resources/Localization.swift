@@ -8,6 +8,7 @@
 import Foundation
 
 enum Localization {
+    static let graphs = "Graphs"
     static let doorOpenClose = "Door Open/Close"
     static let accessPortalOpenClose = "Access Portal Open/Close"
     static let rfidCardIdentification = "RFID Card Identification"

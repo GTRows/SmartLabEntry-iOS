@@ -15,6 +15,7 @@ class UserSessionService: ObservableObject {
         firebaseUser = Auth.auth().currentUser
         userID = firebaseUser?.uid ?? ""
     }
+
     static let shared = UserSessionService()
 
 //    let storage = Storage.storage()
@@ -43,23 +44,29 @@ class UserSessionService: ObservableObject {
             return Constants.defaultUser
         }
 
-        // TODO: - Fetch user from api
-
-        // Else
-
-//        return userStorageService.fetchUser()
+        UserService.getUserDetails { result in
+            switch result {
+            case let .success(userDetails):
+                self.user = UserModel(id: userDetails.userId, firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email, schoolId: userDetails.schoolId, role: userDetails.role, isVerified: userDetails.isVerified)
+            case let .failure(error):
+                print(error.localizedDescription)
+            }
+        }
         return Constants.defaultUser
     }
 
     func createUser(requestBody: [String: Any], completition: @escaping (Result<String, Error>) -> Void) {
-//        APIService.shared.registerUser(requestBody: requestBody) { Result in
-//            switch Result {
-//            case let .success(message):
-//                completition(.success(message))
+//        UserRegistrationRequest request = UserRegistrationRequest(firstName: requestBody["firstName"] as! String, lastName: requestBody["lastName"] as! String, email: requestBody["email"] as! String, password: requestBody["password"] as! String, schoolId: requestBody["schoolId"] as! String)
+//
+//        UserService.registerApi(userRegistrationRequest: requestBody) { result in
+//            switch result {
+//            case .success:
+//                completition(.success("User created."))
 //            case let .failure(error):
+//                print(error.localizedDescription)
 //                completition(.failure(error))
 //            }
-//        }
+//        }, completion: T##(Result<GenericResponse, any Error>) -> Void)
     }
 
     func loginUser(email: String, password: String, completition: @escaping (Result<String, Error>) -> Void) {
@@ -71,6 +78,21 @@ class UserSessionService: ObservableObject {
 //                TODO: Get data from api
                 self.firebaseUser = authResult.user
                 self.userID = authResult.user.uid
+                
+                UserService.getUserStatus { result in
+                    switch result {
+                    case let .success(userStatus):
+                        if userStatus.isVerified {
+                            print("User is verified.")
+                            self.getUser()
+                        } else {
+                            print("User is not verified.")
+                        }
+                    case let .failure(error):
+                        print(error.localizedDescription)
+                    }
+                }
+                
                 print("User signed in.")
                 completition(.success("User signed in."))
             }
@@ -83,8 +105,8 @@ class UserSessionService: ObservableObject {
         user = nil
         firebaseUser = nil
     }
-    
-    func forgotPassword(email: String , completition: @escaping (Result<String, Error>) -> Void) {
+
+    func forgotPassword(email: String, completition: @escaping (Result<String, Error>) -> Void) {
         auth.sendPasswordReset(withEmail: email) { error in
             if let error = error {
                 print(error.localizedDescription)

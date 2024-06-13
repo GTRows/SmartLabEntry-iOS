@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		082EC2552C1A76E700F88D8D /* GraphsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082EC2542C1A76E700F88D8D /* GraphsView.swift */; };
+		082EC2572C1A7E0400F88D8D /* GraphsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082EC2562C1A7E0400F88D8D /* GraphsViewModel.swift */; };
+		082EC25A2C1A836500F88D8D /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 082EC2592C1A836500F88D8D /* Shimmer */; };
 		0844D4B42C1629D500726A1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0844D4B32C1629D500726A1E /* FirebaseAuth */; };
 		0844D4B72C1629F700726A1E /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 0844D4B62C1629F700726A1E /* SwiftUIPager */; };
 		0844D4BD2C162AAA00726A1E /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 0844D4BC2C162AAA00726A1E /* SwipeActions */; };
@@ -72,6 +75,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		082EC2542C1A76E700F88D8D /* GraphsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphsView.swift; sourceTree = "<group>"; };
+		082EC2562C1A7E0400F88D8D /* GraphsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphsViewModel.swift; sourceTree = "<group>"; };
 		0844D4C12C16472800726A1E /* AccessPortalsAccessibleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPortalsAccessibleResponse.swift; sourceTree = "<group>"; };
 		089E06C82BC5D74900632641 /* SmartLabEntry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartLabEntry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		089E06CB2BC5D74900632641 /* SmartLabEntryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartLabEntryApp.swift; sourceTree = "<group>"; };
@@ -139,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0844D4BD2C162AAA00726A1E /* SwipeActions in Frameworks */,
+				082EC25A2C1A836500F88D8D /* Shimmer in Frameworks */,
 				0844D4C02C162B0800726A1E /* Alamofire in Frameworks */,
 				0844D4B42C1629D500726A1E /* FirebaseAuth in Frameworks */,
 				0844D4B72C1629F700726A1E /* SwiftUIPager in Frameworks */,
@@ -205,6 +211,7 @@
 			children = (
 				089E06DB2BC5D8F600632641 /* HomeViewModel.swift */,
 				089E06DC2BC5D8F600632641 /* AuthViewModel.swift */,
+				082EC2562C1A7E0400F88D8D /* GraphsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -346,6 +353,7 @@
 				089E07872BC5DA7500632641 /* AuthView.swift */,
 				089E07882BC5DA7500632641 /* SplashView.swift */,
 				089E07892BC5DA7500632641 /* NotificationView.swift */,
+				082EC2542C1A76E700F88D8D /* GraphsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -394,6 +402,7 @@
 				0844D4B62C1629F700726A1E /* SwiftUIPager */,
 				0844D4BC2C162AAA00726A1E /* SwipeActions */,
 				0844D4BF2C162B0800726A1E /* Alamofire */,
+				082EC2592C1A836500F88D8D /* Shimmer */,
 			);
 			productName = SmartLabEntry;
 			productReference = 089E06C82BC5D74900632641 /* SmartLabEntry.app */;
@@ -428,6 +437,7 @@
 				0844D4B52C1629F700726A1E /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 				0844D4BB2C162AAA00726A1E /* XCRemoteSwiftPackageReference "SwipeActions" */,
 				0844D4BE2C162B0800726A1E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				082EC2582C1A836500F88D8D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = 089E06C92BC5D74900632641 /* Products */;
 			projectDirPath = "";
@@ -469,6 +479,7 @@
 				089E06CC2BC5D74900632641 /* SmartLabEntryApp.swift in Sources */,
 				089E07252BC5D94300632641 /* RoleType.swift in Sources */,
 				089E078E2BC5DA7500632641 /* MembershipConfirmationView.swift in Sources */,
+				082EC2552C1A76E700F88D8D /* GraphsView.swift in Sources */,
 				089E07232BC5D94300632641 /* CardModel.swift in Sources */,
 				089E07142BC5D94300632641 /* ResetPortalRequest.swift in Sources */,
 				089E07312BC5D94300632641 /* DateFormatterExtensions.swift in Sources */,
@@ -497,6 +508,7 @@
 				089E06DD2BC5D8F600632641 /* HomeViewModel.swift in Sources */,
 				089E072C2BC5D94300632641 /* Extansions.swift in Sources */,
 				089E071E2BC5D94300632641 /* UserService.swift in Sources */,
+				082EC2572C1A7E0400F88D8D /* GraphsViewModel.swift in Sources */,
 				089E07932BC5DA7500632641 /* AdminMenuView.swift in Sources */,
 				089E071D2BC5D94300632641 /* AccessPortalService.swift in Sources */,
 				089E078F2BC5DA7500632641 /* FeedBackControlView.swift in Sources */,
@@ -726,6 +738,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		082EC2582C1A836500F88D8D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 		0844D4B22C1629D500726A1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -761,6 +781,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		082EC2592C1A836500F88D8D /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 082EC2582C1A836500F88D8D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
+		};
 		0844D4B32C1629D500726A1E /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0844D4B22C1629D500726A1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

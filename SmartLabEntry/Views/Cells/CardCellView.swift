@@ -14,20 +14,30 @@ enum ActionButtonState {
 }
 
 struct CardCellView: View {
+//    @State var isUserIn
     @State var isUserInSession: Bool = false
     @State var buttonState: ActionButtonState = .Loading
     @State var accessPortal: AccessPortalModel
+    @ObservedObject var viewModel: HomeViewModel
 
-    init(accessPortal: AccessPortalModel) {
+    init(accessPortal: AccessPortalModel, viewModel: HomeViewModel) {
         self.accessPortal = accessPortal
-        self.buttonState = self.isUserInSession ? .Exit : .Enter
+        self.viewModel = viewModel
+        buttonState = viewModel.isUserInAccessPortal ? .Exit : .Enter
     }
 
     var body: some View {
         ZStack {
             cardBackground
             cardContent
+        }.onAppear() {
+            buttonControl()
         }
+    }
+    
+    private func buttonControl(){
+        isUserInSession = viewModel.userInAccessPortal()
+        buttonState = isUserInSession ? .Exit : .Enter
     }
 
     private var cardBackground: some View {
@@ -73,7 +83,9 @@ struct CardCellView: View {
 
     private var restartButton: some View {
         Button(action: {
-            // Burada butonun işlevselliği yer alacak.
+            viewModel.restartAlertViewShow = true
+            print("Restart button pressed")
+            print(viewModel.restartAlertViewShow)
         }) {
             Image(systemName: "lock.rotation")
                 .resizable()
@@ -123,13 +135,18 @@ struct CardCellView: View {
 
     private var sessionButton: some View {
         Button(action: buttonPressed) {
-            Text(isUserInSession ? Localization.exit : Localization.enter)
-                .sessionButtonStyle(isInSession: isUserInSession)
+            Text(viewModel.isUserInAccessPortal ? Localization.exit : Localization.enter)
+                .sessionButtonStyle(isInSession: viewModel.isUserInAccessPortal)
         }
     }
 
     private func buttonPressed() {
-        // Burada butonun işlevselliği yer alacak.
+        if viewModel.isUserInAccessPortal {
+            viewModel.ExitAccessPortal()
+        } else {
+            viewModel.EnterAccessPortal()
+        }
+        buttonControl()
     }
 }
 
@@ -154,5 +171,5 @@ extension Text {
 }
 
 #Preview {
-    CardCellView(accessPortal: AccessPortalModel(id:"123",name: "SmartLab", open: true, maxCapacity: 30, currentUsers: [], avatar: "Logo_2"))
+    CardCellView(accessPortal: AccessPortalModel(id: "123", name: "SmartLab", open: true, maxCapacity: 30, currentUsers: [], avatar: "Logo_2"), viewModel: HomeViewModel())
 }

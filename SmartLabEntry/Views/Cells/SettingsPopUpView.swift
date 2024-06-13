@@ -16,13 +16,15 @@ struct SettingsPopUpView: View {
                 VStack(spacing: 0) {
                     Spacer()
                     TopView
-                    selectView(destination: AdminMenuView(), label: Localization.settings)
+//                    selectView(destination: AdminMenuView(), label: Localization.settings)
+//                    DividerBetweenButtons
+//                    selectView(destination: AdminMenuView(), label: Localization.adminPanel)
+//                    DividerBetweenButtons
+                    selectView(destination: GraphsView(), label: Localization.graphs)
                     DividerBetweenButtons
-                    selectView(destination: AdminMenuView(), label: Localization.adminPanel)
-                    DividerBetweenButtons
-                    selectView(destination: AdminMenuView(), label: Localization.FeedBack)
-                    DividerBetweenButtons
-                    selectView(destination: AdminMenuView(), label: Localization.logOut)
+                    buttonView(label: Localization.logOut).onTapGesture {
+                        UserSessionService.shared.signOut()
+                    }
                     BottomVoidView
                 }
                 .ignoresSafeArea()
@@ -44,7 +46,7 @@ struct SettingsPopUpView: View {
                     .foregroundColor(AppTheme.slateGreyColor)
                     .cornerRadius(5)
                     .padding(.top, 10)
-                Text("Name Surname Dinamik")
+                Text("Menu")
                     .font(.system(size: 32))
                     .foregroundColor(AppTheme.darkBlueColor)
                     .multilineTextAlignment(.center)
@@ -60,8 +62,19 @@ struct SettingsPopUpView: View {
                 .foregroundColor(AppTheme.lightColor)
             VStack {
                 NavigationLink(destination: destination) {
-                    CustomButtonView(label: label, icon: "person.fill")
+                    CustomButtonView(label: label, icon: "chart.bar")
                 }
+            }
+        }
+        .frame(height: 50)
+    }
+
+    func buttonView(label: String) -> some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(AppTheme.lightColor)
+            VStack {
+                CustomButtonView(label: label, icon: "arrow.right.square")
             }
         }
         .frame(height: 50)

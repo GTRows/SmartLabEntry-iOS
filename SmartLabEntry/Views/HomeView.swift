@@ -5,30 +5,21 @@
 //  Created by Fatih Acıroğlu on 19.11.2023.
 //
 
+import Shimmer
 import SwiftUI
 import SwiftUIPager
 import SwipeActions
 
 struct HomeView: View {
-    @StateObject var alertService = AlertService.shared
     @ObservedObject private var viewModel = HomeViewModel()
     @State var isSettingsPresented: Bool = false
     @State var isShowMoreUsers: Bool = false
-    let maxMinimalUsers: Int = 5
 
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
                     Divider()
-                    Button {
-                        viewModel.getAccessPortalList()
-                    } label: {
-                        Text("test")
-                            .padding(.all, 10)
-                            .background(.red)
-                            .cornerRadius(10)
-                    }
                     HStack {
                         headerView
                         Spacer()
@@ -36,9 +27,10 @@ struct HomeView: View {
                             .padding(.trailing, 30)
                     }
                     if viewModel.accessPortalList.isEmpty {
-                        Text(Localization.noAccessPortal)
-                            .font(.title)
-                            .foregroundColor(AppTheme.lightColor)
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: AppTheme.lightColor))
+                            .scaleEffect(2)
+                            .padding(.top, 50)
                     } else {
                         cardsView
                         currentView
@@ -48,8 +40,24 @@ struct HomeView: View {
                 .background(
                     AppTheme.backgroundGradientView
                 )
-                .alert(isPresented: $alertService.isPresenting) {
-                    alertService.alert
+                .alert(isPresented: $viewModel.restartAlertViewShow) {
+                    Alert(
+                        title: Text("Restart"),
+                        message: Text("Are you sure you want to restart?"),
+                        primaryButton: .default(Text("Yes"), action: {
+                            viewModel.RestartAccessPortal() // Onaylandığında yapılacak işlem
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
+                }.alert(isPresented: $viewModel.kickAlertViewShow) {
+                    Alert(
+                        title: Text("Kick"),
+                        message: Text("Are you sure you want to kick?"),
+                        primaryButton: .default(Text("Yes"), action: {
+                            viewModel.removeUserFromAccessPortal()
+                        }),
+                        secondaryButton: .cancel(Text("No"))
+                    )
                 }
                 if isSettingsPresented {
                     Color.black
@@ -68,6 +76,8 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
+        }.onAppear {
+            viewModel.cardChanged()
         }
     }
 
@@ -78,7 +88,7 @@ struct HomeView: View {
                 data: viewModel.accessPortalList,
                 id: \.self
             ) { item in
-                CardCellView(accessPortal: item)
+                CardCellView(accessPortal: item, viewModel: viewModel)
             }
             .singlePagination(ratio: 0.5, sensitivity: .low)
             .onPageWillChange({ page in
@@ -91,60 +101,44 @@ struct HomeView: View {
     }
 
     var currentView: some View {
-        ZStack {
+        VStack {
+            Text("\(viewModel.accessPortalName)\n" + Localization.occupantsInLab)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(AppTheme.darkBlueColor)
+                .multilineTextAlignment(.center)
+                .padding(.top, 10)
+            Divider()
+            ScrollView {
+                currentUsersView
+            }
+        }.background {
             Rectangle()
                 .fill(AppTheme.lightColor)
                 .frame(width: 350)
                 .cornerRadius(20)
-            VStack {
-                Text("\(viewModel.accessPortalName)\n" + Localization.occupantsInLab)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(AppTheme.darkBlueColor)
-                    .multilineTextAlignment(.center)
-                    .padding()
-
-                if isShowMoreUsers {
-                    ScrollView {
-                        currentUsersView
-                    }
-                } else {
-                    currentUsersView
-                }
-
-                Spacer()
-                Button {
-                    isShowMoreUsers.toggle()
-                } label: {
-                    Image(systemName: isShowMoreUsers ? "chevron.up" : "chevron.down")
-                        .resizable()
-                        .frame(width: 30, height: 20)
-                        .foregroundColor(AppTheme.darkBlueColor)
-                }
-            }
         }
     }
 
     var filteredUsers: [(offset: Int, element: CurrentUserModel)] {
         let enumeratedUsers = Array(viewModel.currentUsers.enumerated())
-        return isShowMoreUsers ? enumeratedUsers : Array(enumeratedUsers.prefix(5))
+        return enumeratedUsers
     }
 
     var currentUsersView: some View {
-        VStack {
+        VStack(spacing: 5) {
             ForEach(filteredUsers, id: \.element.userId) { index, user in
                 HStack {
                     Text("\(index + 1) - \(user.userName)")
-                        .font(.system(size: 20))
+                        .font(.system(size: 17))
                         .foregroundColor(AppTheme.darkBlueColor)
                         .lineLimit(1)
                         .padding(.leading, 45)
                         .multilineTextAlignment(.leading)
-                        .frame(maxWidth: 250, alignment: .leading)
+                        .frame(maxWidth: 300, alignment: .leading)
                     SwipeView {
-                        Spacer()
                         Text("\(user.userEnterTime, formatter: DateFormatter.timeOnly)")
-                            .font(.system(size: 20))
+                            .font(.system(size: 17))
                             .fontWeight(.medium)
                             .foregroundColor(AppTheme.darkBlueColor)
                             .multilineTextAlignment(.center)
@@ -152,18 +146,17 @@ struct HomeView: View {
                             .cornerRadius(20)
                     } trailingActions: { _ in
                         Button {
-                            alertService.showString(title: Localization.removeUser, message: Localization.removeUserQuestion)
-                            print("Remove user pressed")
+                            viewModel.lastKickCurrentUser = user
+                            viewModel.kickAlertViewShow = true
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .resizable()
-                                .frame(width: 40, height: 40)
+                                .frame(width: 25, height: 25)
                                 .foregroundColor(Color.red)
                         }
                     }.padding(.trailing, 35)
                 }
-
-                if (viewModel.currentUsers.last?.userId != user.userId && isShowMoreUsers) || (index + 1 != maxMinimalUsers && !isShowMoreUsers) {
+                if viewModel.currentUsers.last?.userId != user.userId {
                     Rectangle()
                         .fill(AppTheme.darkBlueColor)
                         .frame(width: 300, height: 1)
@@ -173,14 +166,10 @@ struct HomeView: View {
     }
 
     var settingsButtonView: some View {
-        // logout button
         Button(action: {
             withAnimation {
                 isSettingsPresented = true
             }
-//            alertService.showString(title: "Logout", message: "Logout button pressded")
-//            print("Logout")
-//            UserSessionService.shared.signOut()
         }) {
             Image(systemName: "person.fill")
                 .resizable()
@@ -192,12 +181,31 @@ struct HomeView: View {
     var headerView: some View {
         HStack {
             VStack {
-                Text(Localization.hi + viewModel.name + "!")
-                    .font(.custom("Comfortaa", size: 35))
-                    .fontWeight(.bold)
-                    .foregroundColor(AppTheme.lightColor)
-                    .multilineTextAlignment(.leading)
-                    .frame(width: 250, alignment: .leading)
+                HStack(spacing: 0) {
+                    Text(Localization.hi)
+                        .font(.custom("Comfortaa", size: 35))
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                        .foregroundColor(AppTheme.lightColor)
+                        .multilineTextAlignment(.leading)
+                    if viewModel.name == "name" {
+                        Text("loading...")
+                            .font(.custom("Comfortaa", size: 35))
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .foregroundColor(AppTheme.lightColor)
+                            .multilineTextAlignment(.leading)
+                            .shimmering()
+                    } else {
+                        Text(viewModel.name + "!")
+                            .font(.custom("Comfortaa", size: 35))
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .foregroundColor(AppTheme.lightColor)
+                            .multilineTextAlignment(.leading)
+                    }
+                }
+                .frame(width: 250, alignment: .leading)
                 Text(Localization.welcome)
                     .font(.custom("Comfortaa", size: 15))
                     .fontWeight(.medium)
@@ -209,6 +217,7 @@ struct HomeView: View {
     }
 }
 
-//#Preview {
-//    HomeView()
-//}
+
+#Preview {
+    HomeView()
+}
